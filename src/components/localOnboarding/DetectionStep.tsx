@@ -1,45 +1,37 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Loader2 } from "../icons";
 import { useTranslation } from "react-i18next";
 import { StepHeader } from "./StepHeader";
-import { Button } from "../../ui/Button";
-import { Card, CardContent } from "../../ui/Card";
-import { Spinner } from "../../ui/Spinner";
-import { buildHardwareProfile, type HardwareProfile } from "../../lib/hardwareProfile";
+import { Button } from "../ui/button";
+import { Card, CardContent } from "../ui/card";
+import type { HardwareProfile } from "../../lib/hardwareProfile";
 
 interface Props {
-  onDetect: () => Promise<HardwareProfile | null>;
   result: HardwareProfile | null;
   loading: boolean;
   error: string | null;
+  onRetry: () => void;
   onContinue: () => void;
 }
 
-export default function DetectionStep({ onDetect, result, loading, error, onContinue }: Props) {
+export default function DetectionStep({ result, loading, error, onRetry, onContinue }: Props) {
   const { t } = useTranslation();
-  const attemptRef = useRef(false);
 
-  useEffect(() => {
-    if (attemptRef.current) return;
-    attemptRef.current = true;
-    let cancelled = false;
-    onDetect()
-      .then((r) => {
-        if (!cancelled) {
-          if (r) onContinue();
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {}
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
   if (loading) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-4 p-6">
-        <Spinner />
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         <p className="text-sm text-muted-foreground">{t("localOnboarding.detection.loading")}</p>
+      </div>
+    );
+  }
+
+  if (error && !result) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
+        <p className="text-sm text-destructive">{error}</p>
+        <Button onClick={onRetry} variant="outline">
+          {t("localOnboarding.detection.retry")}
+        </Button>
       </div>
     );
   }
@@ -64,6 +56,7 @@ export default function DetectionStep({ onDetect, result, loading, error, onCont
             </ul>
           </CardContent>
         </Card>
+        {error && <p className="text-sm text-destructive">{error}</p>}
         <Button onClick={onContinue} variant="outline" className="ml-auto">
           {t("localOnboarding.detection.continue")}
         </Button>

@@ -1,6 +1,5 @@
-import { useCallback, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { SearchableList } from "../../ui/SearchableList";
 import { StepHeader } from "./StepHeader";
 import type { SpokenLanguage } from "../../lib/localLanguages";
 
@@ -15,7 +14,7 @@ export default function LanguageStep({ languages, allLanguages, onChange, onCont
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
 
-  const filtered = useCallback(() => {
+  const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     if (!q) return allLanguages;
     return allLanguages.filter((l) =>
@@ -23,15 +22,12 @@ export default function LanguageStep({ languages, allLanguages, onChange, onCont
     );
   }, [allLanguages, search]);
 
-  const toggle = useCallback(
-    (language: SpokenLanguage) => {
-      const next = languages.find((l) => l.code === language.code)
-        ? languages.filter((l) => l.code !== language.code)
-        : [...languages, language];
-      onChange(next);
-    },
-    [languages, onChange]
-  );
+  const toggle = (language: SpokenLanguage) => {
+    const next = languages.find((l) => l.code === language.code)
+      ? languages.filter((l) => l.code !== language.code)
+      : [...languages, language];
+    onChange(next);
+  };
 
   return (
     <div className="flex h-full flex-col p-6">
@@ -41,15 +37,24 @@ export default function LanguageStep({ languages, allLanguages, onChange, onCont
       />
 
       <div className="mt-4 flex flex-col gap-4 flex-1 min-h-0">
-        <SearchableList
-          items={filtered()}
-          search={search}
-          onSearchChange={setSearch}
-          emptyLabel={t("localOnboarding.languages.noResults")}
-          renderItem={(language) => {
+        <input
+          type="search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder={t("localOnboarding.languages.searchPlaceholder") as string}
+          className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring/30"
+        />
+        <div className="flex flex-1 min-h-0 flex-col gap-2 overflow-y-auto pr-1">
+          {filtered.length === 0 && (
+            <p className="py-6 text-center text-sm text-muted-foreground">
+              {t("localOnboarding.languages.noResults")}
+            </p>
+          )}
+          {filtered.map((language) => {
             const selected = languages.some((l) => l.code === language.code);
             return (
               <button
+                key={language.code}
                 type="button"
                 className={`flex w-full items-center justify-between gap-3 rounded-lg px-4 py-3 text-left transition-colors ${
                   selected ? "bg-accent/20 border border-accent" : "bg-default border border-transparent hover:bg-default/50"
@@ -68,8 +73,8 @@ export default function LanguageStep({ languages, allLanguages, onChange, onCont
                 </div>
               </button>
             );
-          }}
-        />
+          })}
+        </div>
 
         <div className="mt-auto flex justify-end">
           <button

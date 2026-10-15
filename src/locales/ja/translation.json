@@ -4876,5 +4876,115 @@
       "provider": "プロバイダー",
       "requestId": "リクエストID"
     }
+  },
+  "localOnboarding": {
+    "shell": {
+      "loading": "セットアップ中…",
+      "title": "ローカル音声入力のセットアップ",
+      "description": "すべてデバイス上で動作します。言語を選び、モデルをダウンロードして、マイクをテストしましょう。"
+    },
+    "progress": {
+      "detection": "デバイス確認",
+      "languages": "言語",
+      "stack": "モデル",
+      "download": "ダウンロード",
+      "micTest": "マイクテスト",
+      "activation": "有効化"
+    },
+    "detection": {
+      "loading": "デバイスを確認中…",
+      "retry": "再試行",
+      "title": "デバイスを確認しています",
+      "description": "プラットフォームとハードウェアを確認し、ローカルに適したモデルをおすすめします。",
+      "resultLabel": "検出されたハードウェア",
+      "platform": "プラットフォーム: {{platform}}",
+      "class": "プロファイル: {{class}}",
+      "ramHint": "メモリ: {{hint}}",
+      "diskHint": "ストレージ: {{hint}}",
+      "hasGpuRuntime": "GPU アクセラレーション: {{yes}}",
+      "hasStreamingRuntime": "ライブ文字起こし: {{yes}}",
+      "continue": "続ける"
+    },
+    "languages": {
+      "title": "どの言語で音声入力しますか?",
+      "description": "対応する文字起こしモデルをおすすめするために使います。",
+      "searchPlaceholder": "言語を検索…",
+      "noResults": "一致する言語がありません。",
+      "selected": "選択済み",
+      "continue": "続ける ({{count}})"
+    },
+    "stack": {
+      "loading": "最適なモデルを探しています…",
+      "continueWithoutRecommendation": "おすすめなしで続ける",
+      "title": "おすすめの構成",
+      "description": "これらのモデルはすべてデバイス上で動作します。後から設定で変更できます。",
+      "transcription": "文字起こし",
+      "assistant": "アシスタント",
+      "chipStreaming": "ライブ",
+      "chipOffline": "オフライン",
+      "translationPairs": "翻訳",
+      "translationPairsDescription": "これらのモデルの内蔵翻訳方向。",
+      "continue": "続ける",
+      "saving": "保存中…"
+    },
+    "download": {
+      "loading": "ダウンロードを準備中…",
+      "title": "モデルをダウンロード",
+      "description": "モデルは一度だけダウンロードされ、デバイスに保存されます。",
+      "errorTitle": "問題が発生しました",
+      "installed": "インストール済み",
+      "phase": {
+        "progress": "ダウンロード中…{{percent}}%",
+        "installing": "インストール中…{{percent}}%",
+        "complete": "完了",
+        "failed": "失敗"
+      },
+      "retry": "再試行",
+      "cancel": "キャンセル",
+      "download": "ダウンロード",
+      "failedItem": "ダウンロードに失敗しました",
+      "failedGeneric": "ダウンロードに失敗しました。接続を確認して再試行してください。",
+      "someFailed": "一部のダウンロードに失敗しました。再試行して続けてください。",
+      "overallStatus": "{{phase}}・{{percent}}%",
+      "allInstalled": "続ける"
+    },
+    "micTest": {
+      "loading": "マイクテストを準備中…",
+      "title": "マイクをテスト",
+      "description": "短いサンプルを録音して、ローカル文字起こしが動作することを確認します。",
+      "testLabel": "マイク",
+      "recording": "録音中…",
+      "idle": "待機中",
+      "transcribing": "文字起こし中…",
+      "stop": "停止",
+      "start": "録音",
+      "result": "文字起こし結果",
+      "retry": "再試行",
+      "continue": "続ける",
+      "pending": "「録音」を押して、何か話してみてください。",
+      "skip": "スキップ"
+    },
+    "activation": {
+      "dictationLabel": "音声入力",
+      "assistantLabel": "音声アシスタント",
+      "dictationRequired": "続けるには音声入力のホットキーを選んでください。",
+      "assistantRequired": "アシスタントのホットキーを選ぶか、アシスタントをオフにしてください。",
+      "registerFailed": "そのホットキーは登録できませんでした。",
+      "title": "音声入力を有効化",
+      "description": "開始方法を選んでください。一度押すと開始、もう一度押すと停止します。",
+      "dictation": "音声入力",
+      "tap": "押す",
+      "hold": "長押し",
+      "pushUnavailable": "このホットキーでは長押しトークに対応していません。押して切り替える方式になります。",
+      "customPrompt": "ホットキーを入力 (例: Control+Shift+Space):",
+      "invalidHotkey": "そのホットキーは無効です。",
+      "custom": "カスタム…",
+      "selectHotkey": "上からホットキーを選んでください。",
+      "assistant": "音声アシスタント",
+      "selectAssistantHotkey": "アシスタントのホットキーを選んでください。",
+      "saving": "保存中…",
+      "skip": "スキップ",
+      "continue": "完了"
+    }
   }
 }

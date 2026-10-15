@@ -24,6 +24,17 @@ const isOnboardingInProgress = () =>
 
 const ControlPanel = React.lazy(() => import("./components/ControlPanel.tsx"));
 const OnboardingFlow = React.lazy(() => import("./components/OnboardingFlow.tsx"));
+const LocalOnboardingShell = React.lazy(() => import("./components/localOnboarding/OnboardingShell.tsx"));
+
+const isLocalSetupCompleted = () => {
+  try {
+    const raw = localStorage.getItem("localSetupV1");
+    if (!raw) return false;
+    return Boolean(JSON.parse(raw)?.completed);
+  } catch {
+    return false;
+  }
+};
 
 export default function AppRouter() {
   useTheme();
@@ -54,6 +65,7 @@ function MainApp() {
   const autoSyncReady = authLoaded && policyResolved;
 
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showLocalSetup, setShowLocalSetup] = useState(false);
   const [needsReauth, setNeedsReauth] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [postOnboardingSettingsSection, setPostOnboardingSettingsSection] = useState(undefined);
@@ -69,6 +81,9 @@ function MainApp() {
 
       if (!localStorage.getItem("onboardingCompleted")) {
         import("./components/OnboardingFlow.tsx").catch(() => {});
+      }
+      if (!isLocalSetupCompleted()) {
+        import("./components/localOnboarding/OnboardingShell.tsx").catch(() => {});
       }
     }
 
@@ -108,6 +123,9 @@ function MainApp() {
     const resolved = localStorage.getItem("onboardingCompleted") === "true";
 
     if (isControlPanel) {
+      if (!isLocalSetupCompleted()) {
+        setShowLocalSetup(true);
+      }
       if (!resolved) {
         setShowOnboarding(true);
       } else if (!isSignedIn && !authSkipped) {
@@ -134,16 +152,22 @@ function MainApp() {
     const authSkipped =
       localStorage.getItem("authenticationSkipped") === "true" ||
       localStorage.getItem("skipAuth") === "true";
-    if (completed && !isOnboardingInProgress() && (isSignedIn || authSkipped)) {
+    if (
+      completed &&
+      !isOnboardingInProgress() &&
+      !showLocalSetup &&
+      (isSignedIn || authSkipped)
+    ) {
       void window.electronAPI?.setOnboardingWindowMode?.("restore");
     }
-  }, [authLoaded, isControlPanel, isSignedIn]);
+  }, [authLoaded, isControlPanel, isSignedIn, showLocalSetup]);
 
   const settledControlPanelWindowMode = resolveSettledControlPanelWindowMode({
     isControlPanel,
     isLoading,
     isWaitingForPolicyStart,
     showOnboarding,
+    showLocalSetup,
     needsReauth,
   });
 
@@ -160,7 +184,8 @@ function MainApp() {
 
     const onboardingCompleted = localStorage.getItem("onboardingCompleted") === "true";
     const normalAppVisible =
-      onboardingCompleted && (!isControlPanel || (!showOnboarding && !needsReauth));
+      onboardingCompleted &&
+      (!isControlPanel || (!showOnboarding && !showLocalSetup && !needsReauth));
     const authSkipped =
       localStorage.getItem("authenticationSkipped") === "true" ||
       localStorage.getItem("skipAuth") === "true";
@@ -185,7 +210,15 @@ function MainApp() {
     return () => {
       cancelled = true;
     };
-  }, [isControlPanel, isLoading, isSignedIn, isWaitingForPolicyStart, needsReauth, showOnboarding]);
+  }, [
+    isControlPanel,
+    isLoading,
+    isSignedIn,
+    isWaitingForPolicyStart,
+    needsReauth,
+    showOnboarding,
+    showLocalSetup,
+  ]);
 
   const handleOnboardingComplete = (options) => {
     if (options?.openSettings) {
@@ -200,6 +233,18 @@ function MainApp() {
   // resolve (guest/offline presents as signed out).
   if (isLoading || isWaitingForPolicyStart) {
     return <LoadingFallback />;
+  }
+
+  if (isControlPanel && showLocalSetup) {
+    return (
+      <Suspense fallback={<LoadingFallback />}>
+        <LocalOnboardingShell
+          onComplete={() => {
+            setShowLocalSetup(false);
+          }}
+        />
+      </Suspense>
+    );
   }
 
   if (isControlPanel && showOnboarding) {

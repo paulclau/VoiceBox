@@ -1,20 +1,19 @@
-import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { Loader2 } from "../icons";
 import { StepHeader } from "./StepHeader";
 import type { LocalStackRecommendation } from "../../lib/recommendedLocalStack";
-import { Card, CardDescription, CardTitle } from "../../ui/Card";
-import { Button } from "../../ui/Button";
-import { Separator } from "../../ui/Separator";
-import { Badge } from "../../ui/Badge";
+import { CardDescription, CardTitle } from "../ui/card";
+import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
 import { StackChoice } from "./StackChoice";
-import { saveLocalSetup, type LocalSetupState } from "../../api/localShellApi";
+
+type StackChoiceValue = LocalStackRecommendation["choice"];
 
 interface Props {
   recommendation: LocalStackRecommendation | null;
   loading: boolean;
-  saving: boolean;
   error: string | null;
-  onSelect: (choice: LocalStackRecommendation["choice"]) => void;
+  onSelect: (choice: StackChoiceValue) => void;
   onChangeTranscription: (modelId: string) => void;
   onChangeAssistant: (modelId: string) => void;
   onContinue: () => void;
@@ -23,7 +22,6 @@ interface Props {
 export default function RecommendedStackStep({
   recommendation,
   loading,
-  saving,
   error,
   onSelect,
   onChangeTranscription,
@@ -33,23 +31,10 @@ export default function RecommendedStackStep({
   const { t } = useTranslation();
   const choice = recommendation?.choice;
 
-  const persistChoice = useCallback(
-    async (newChoice: LocalStackRecommendation["choice"]) => {
-      await saveLocalSetup({
-        version: 1,
-        activationMode: "tap",
-        dictationHotkey: "",
-        assistantHotkey: "",
-        completed: false,
-      });
-    },
-    [],
-  );
-
   if (loading) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-4 p-6">
-        <Spinner />
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         <p className="text-sm text-muted-foreground">{t("localOnboarding.stack.loading")}</p>
       </div>
     );
@@ -76,16 +61,20 @@ export default function RecommendedStackStep({
       <div className="mt-4 flex flex-col gap-4">
         <StackChoice
           label={t("localOnboarding.stack.transcription")}
-          recommended={choice?.transcriptionModelId}
+          recommended={choice?.transcriptionModelId ?? null}
           current={choice?.transcriptionModelId ?? null}
           available={recommendation?.transcriptionOptions ?? []}
           onSelect={(modelId) => {
-            onSelect((prev) => ({ ...prev, transcriptionModelId: modelId }));
+            const next: StackChoiceValue = {
+              transcriptionModelId: modelId,
+              assistantModelId: choice?.assistantModelId ?? "",
+            };
+            onSelect(next);
             onChangeTranscription(modelId);
-            persistChoice({ transcriptionModelId: modelId, assistantModelId: choice?.assistantModelId ?? "" });
           }}
           renderMeta={(modelId) => {
-            const model = recommendation?.transcriptionOptions.find((m) => m.modelId === modelId);return model ?? null;
+            const model = recommendation?.transcriptionOptions.find((m) => m.modelId === modelId);
+            return model ?? null;
           }}
           renderChip={(model) => {
             const runtime = model.runtime === "online" ? t("localOnboarding.stack.chipStreaming") : t("localOnboarding.stack.chipOffline");
@@ -97,20 +86,24 @@ export default function RecommendedStackStep({
           }}
         />
 
-        <Separator />
+        <div className="h-px bg-border" aria-hidden="true" />
 
         <StackChoice
           label={t("localOnboarding.stack.assistant")}
-          recommended={choice?.assistantModelId}
+          recommended={choice?.assistantModelId ?? null}
           current={choice?.assistantModelId ?? null}
           available={recommendation?.assistantOptions ?? []}
           onSelect={(modelId) => {
-            onSelect((prev) => ({ ...prev, assistantModelId: modelId }));
+            const next: StackChoiceValue = {
+              transcriptionModelId: choice?.transcriptionModelId ?? "",
+              assistantModelId: modelId,
+            };
+            onSelect(next);
             onChangeAssistant(modelId);
-            persistChoice({ transcriptionModelId: choice?.transcriptionModelId ?? "", assistantModelId: modelId });
           }}
           renderMeta={(modelId) => {
-            const model = recommendation?.assistantOptions.find((m) => m.modelId === modelId);return model ?? null;
+            const model = recommendation?.assistantOptions.find((m) => m.modelId === modelId);
+            return model ?? null;
           }}
           renderChip={(model) => {
             const quant = model.quantization ?? "";
@@ -120,7 +113,7 @@ export default function RecommendedStackStep({
 
         {recommendation?.translationPairs && recommendation.translationPairs.length > 0 && (
           <>
-            <Separator />
+            <div className="h-px bg-border" aria-hidden="true" />
 
             <div className="flex flex-col gap-2 rounded-lg border border-default bg-default p-4">
               <div className="flex items-center justify-between">
@@ -143,9 +136,6 @@ export default function RecommendedStackStep({
           </>
         )}
 
-        {saving && (
-          <p className="mt-2 text-center text-sm text-muted-foreground">{t("localOnboarding.stack.saving")}</p>
-        )}
       </div>
     </div>
   );

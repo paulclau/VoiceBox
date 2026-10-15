@@ -21,12 +21,16 @@ function readState(): LocalSetupState | null {
   }
 }
 
+function bridge(): any {
+  return (window as any).electronAPI;
+}
+
 // Renderer-local reads/writes first; IPC variants call main when available.
 export async function getLocalSetup(): Promise<LocalSetupState | null> {
   const local = readState();
   if (local) return local;
   try {
-    const bridgeResult = await window.electronAPI?.getLocalSetup?.();
+    const bridgeResult = await bridge()?.getLocalSetup?.();
     if (bridgeResult && typeof bridgeResult === "object" && "version" in bridgeResult) {
       const normalized = bridgeResult as LocalSetupState;
       if (normalized.version === 1) {
@@ -63,8 +67,8 @@ export async function saveLocalSetup(state: LocalSetupState): Promise<boolean> {
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
     try {
-      const mainOk = await window.electronAPI?.saveLocalSetup?.(normalized);
-      if (mainOk !== false && mainOk !== null) {
+      const mainOk = await bridge()?.saveLocalSetup?.(normalized);
+      if (mainOk !== false && mainOk !== null && mainOk !== undefined) {
         return Boolean(mainOk);
       }
     } catch {
@@ -79,7 +83,7 @@ export async function saveLocalSetup(state: LocalSetupState): Promise<boolean> {
 // Forward hotkey/activation persistence to the main process when present.
 export async function updateHotkey(hotkey: string): Promise<boolean> {
   try {
-    const result = await window.electronAPI?.updateHotkey?.(hotkey);
+    const result = await bridge()?.updateHotkey?.(hotkey);
     return Boolean(result?.success !== false);
   } catch {
     return false;
@@ -88,7 +92,7 @@ export async function updateHotkey(hotkey: string): Promise<boolean> {
 
 export async function getEffectiveDefaultHotkey(): Promise<string | null> {
   try {
-    const key = await window.electronAPI?.getEffectiveDefaultHotkey?.();
+    const key = await bridge()?.getEffectiveDefaultHotkey?.();
     return typeof key === "string" ? key : null;
   } catch {
     return null;
@@ -97,7 +101,7 @@ export async function getEffectiveDefaultHotkey(): Promise<string | null> {
 
 export async function getHotkeyModeInfo(hotkey: string): Promise<{ supportsPushToTalk?: boolean } | null> {
   try {
-    const info = await window.electronAPI?.getHotkeyModeInfo?.(hotkey);
+    const info = await bridge()?.getHotkeyModeInfo?.(hotkey);
     if (info && typeof info === "object") return info as { supportsPushToTalk?: boolean };
     return null;
   } catch {
@@ -107,7 +111,9 @@ export async function getHotkeyModeInfo(hotkey: string): Promise<{ supportsPushT
 
 export async function canRegisterHotkey(hotkey: string): Promise<boolean> {
   try {
-    const result = await window.electronAPI?.canRegisterHotkey?.(hotkey);
+    const check = bridge()?.canRegisterHotkey;
+    if (typeof check !== "function") return true;
+    const result = await check.call(bridge(), hotkey);
     return Boolean(result?.success !== false);
   } catch {
     return false;

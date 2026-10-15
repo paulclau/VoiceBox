@@ -1,11 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StepHeader } from "./StepHeader";
-import { Button } from "../../ui/Button";
-import { Card, CardContent, CardTitle } from "../../ui/Card";
-import { Spinner } from "../../ui/Spinner";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
-import { transcribeLocalParakeet, transcribeLocalWhisper } from "../../api/sttApi";
+import { Loader2 } from "../icons";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardTitle } from "../ui/card";
 
 interface Props {
   loading: boolean;
@@ -31,23 +29,30 @@ export default function MicTestStep({
   onContinue,
 }: Props) {
   const { t } = useTranslation();
-  const [localTranscript, setLocalTranscript] = useLocalStorage("local-mic-test-transcript", "");
+  const [lastTranscript, setLastTranscript] = useState<string | null>(null);
+
+  const shown = result ?? lastTranscript;
+
+  // Keep the last good transcript visible if the live result clears.
+  useEffect(() => {
+    if (result) setLastTranscript(result);
+  }, [result]);
 
   const handleRetry = useCallback(() => {
-    setLocalTranscript("");
+    setLastTranscript(null);
     onRetry();
   }, [onRetry]);
 
   const handleContinue = useCallback(() => {
-    if (result || localTranscript) {
+    if (shown) {
       onContinue();
     }
-  }, [result, localTranscript, onContinue]);
+  }, [shown, onContinue]);
 
   if (loading) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-4 p-6">
-        <Spinner />
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         <p className="text-sm text-muted-foreground">{t("localOnboarding.micTest.loading")}</p>
       </div>
     );
@@ -106,19 +111,9 @@ export default function MicTestStep({
                     </Button>
                   </div>
                 </>
-              ) : result ? (
+              ) : shown ? (
                 <>
-                  <span className="text-sm text-default-foreground whitespace-pre-wrap">{result}</span>
-                  <div className="ml-auto flex gap-2">
-                    <Button variant="ghost" size="sm" onClick={handleContinue}>
-                      {t("localOnboarding.micTest.continue")}
-                    </Button>
-                  </div>
-                </>
-              ) : localTranscript ? (
-                <>
-                  <span className="text-sm text-muted-foreground">{t("localOnboarding.micTest.noResult")}</span>
-                  <span className="text-sm text-default-foreground whitespace-pre-wrap">{localTranscript}</span>
+                  <span className="text-sm text-default-foreground whitespace-pre-wrap">{shown}</span>
                   <div className="ml-auto flex gap-2">
                     <Button variant="ghost" size="sm" onClick={handleContinue}>
                       {t("localOnboarding.micTest.continue")}
@@ -131,7 +126,7 @@ export default function MicTestStep({
             </div>
 
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={handleRetry} disabled={!error}>
+              <Button variant="outline" size="sm" onClick={handleRetry}>
                 {t("localOnboarding.micTest.retry")}
               </Button>
             </div>
@@ -142,7 +137,7 @@ export default function MicTestStep({
           <Button variant="outline" onClick={onContinue}>
             {t("localOnboarding.micTest.skip")}
           </Button>
-          <Button onClick={handleContinue} disabled={!result && !localTranscript}>
+          <Button onClick={handleContinue} disabled={!shown}>
             {t("localOnboarding.micTest.continue")}
           </Button>
         </div>

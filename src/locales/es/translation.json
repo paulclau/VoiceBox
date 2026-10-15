@@ -4876,5 +4876,115 @@
       "provider": "Proveedor",
       "requestId": "ID de solicitud"
     }
+  },
+  "localOnboarding": {
+    "shell": {
+      "loading": "Configurando…",
+      "title": "Configurar el dictado local",
+      "description": "Todo funciona en tu dispositivo: elige tus idiomas, descarga los modelos y prueba tu micrófono."
+    },
+    "progress": {
+      "detection": "Revisar equipo",
+      "languages": "Idiomas",
+      "stack": "Modelos",
+      "download": "Descarga",
+      "micTest": "Micrófono",
+      "activation": "Activación"
+    },
+    "detection": {
+      "loading": "Revisando tu equipo…",
+      "retry": "Reintentar",
+      "title": "Revisando tu equipo",
+      "description": "Analizamos tu plataforma y hardware para recomendar modelos que funcionen bien localmente.",
+      "resultLabel": "Hardware detectado",
+      "platform": "Plataforma: {{platform}}",
+      "class": "Perfil: {{class}}",
+      "ramHint": "Memoria: {{hint}}",
+      "diskHint": "Almacenamiento: {{hint}}",
+      "hasGpuRuntime": "Aceleración GPU: {{yes}}",
+      "hasStreamingRuntime": "Transcripción en vivo: {{yes}}",
+      "continue": "Continuar"
+    },
+    "languages": {
+      "title": "¿En qué idiomas dictas?",
+      "description": "Lo usamos para recomendar modelos de transcripción para tus idiomas.",
+      "searchPlaceholder": "Buscar idiomas…",
+      "noResults": "Ningún idioma coincide.",
+      "selected": "Elegido",
+      "continue": "Continuar ({{count}})"
+    },
+    "stack": {
+      "loading": "Buscando los mejores modelos…",
+      "continueWithoutRecommendation": "Continuar sin recomendaciones",
+      "title": "Configuración recomendada",
+      "description": "Estos modelos funcionan por completo en tu dispositivo. Puedes cambiarlos en Ajustes.",
+      "transcription": "Transcripción",
+      "assistant": "Asistente",
+      "chipStreaming": "En vivo",
+      "chipOffline": "Sin conexión",
+      "translationPairs": "Traducción",
+      "translationPairsDescription": "Direcciones de traducción integradas de estos modelos.",
+      "continue": "Continuar",
+      "saving": "Guardando…"
+    },
+    "download": {
+      "loading": "Preparando descargas…",
+      "title": "Descargar modelos",
+      "description": "Los modelos se descargan una vez y se guardan en tu dispositivo.",
+      "errorTitle": "Algo salió mal",
+      "installed": "Instalado",
+      "phase": {
+        "progress": "Descargando… {{percent}} %",
+        "installing": "Instalando… {{percent}} %",
+        "complete": "Completo",
+        "failed": "Falló"
+      },
+      "retry": "Reintentar",
+      "cancel": "Cancelar",
+      "download": "Descargar",
+      "failedItem": "Descarga fallida",
+      "failedGeneric": "La descarga falló. Revisa tu conexión e inténtalo de nuevo.",
+      "someFailed": "Algunas descargas fallaron: reinténtalas para continuar.",
+      "overallStatus": "{{phase}} · {{percent}} %",
+      "allInstalled": "Continuar"
+    },
+    "micTest": {
+      "loading": "Preparando la prueba…",
+      "title": "Prueba tu micrófono",
+      "description": "Graba una muestra corta para comprobar la transcripción local.",
+      "testLabel": "Micrófono",
+      "recording": "Grabando…",
+      "idle": "Inactivo",
+      "transcribing": "Transcribiendo…",
+      "stop": "Detener",
+      "start": "Grabar",
+      "result": "Transcripción",
+      "retry": "Reintentar",
+      "continue": "Continuar",
+      "pending": "Pulsa Grabar y di unas palabras.",
+      "skip": "Omitir"
+    },
+    "activation": {
+      "dictationLabel": "Dictado",
+      "assistantLabel": "Asistente de voz",
+      "dictationRequired": "Elige una tecla de dictado para continuar.",
+      "assistantRequired": "Elige una tecla de asistente o desactívalo.",
+      "registerFailed": "No se pudo registrar esa tecla.",
+      "title": "Activar el dictado",
+      "description": "Elige cómo iniciar el dictado. Pulsa una vez para empezar y otra para detener.",
+      "dictation": "Dictado",
+      "tap": "Pulsar",
+      "hold": "Mantener",
+      "pushUnavailable": "Mantener para hablar no funciona con esta tecla; se usará pulsar para alternar.",
+      "customPrompt": "Escribe una tecla (p. ej., Control+Shift+Space):",
+      "invalidHotkey": "Esa tecla no es válida.",
+      "custom": "Personalizada…",
+      "selectHotkey": "Elige una tecla arriba.",
+      "assistant": "Asistente de voz",
+      "selectAssistantHotkey": "Elige una tecla de asistente.",
+      "saving": "Guardando…",
+      "skip": "Omitir",
+      "continue": "Terminar"
+    }
   }
 }

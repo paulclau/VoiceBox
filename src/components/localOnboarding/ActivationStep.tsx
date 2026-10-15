@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StepHeader } from "./StepHeader";
-import { Button } from "../../ui/Button";
-import { Card, CardContent, CardDescription, CardTitle } from "../../ui/Card";
-import { Separator } from "../../ui/Separator";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardDescription, CardTitle } from "../ui/card";
 import { useHotkeyRegistration } from "../../hooks/useHotkeyRegistration";
 import { formatHotkeyLabel } from "../../utils/hotkeys";
 import { validateHotkeyForSlot } from "../../utils/hotkeyValidation";
 import { getPlatform, type Platform } from "../../utils/platform";
 import { getEffectiveDefaultHotkey, getHotkeyModeInfo, type LocalSetupState } from "../../api/localShellApi";
+import { useSettingsStore } from "../../stores/settingsStore";
 
 type ActivationChoice = {
   dictationMode: "tap" | "push";
@@ -24,8 +24,7 @@ interface Props {
   saving: boolean;
   error: string | null;
   canRegister: boolean;
-  onSave: (choice: ActivationChoice) => Promise<boolean>;
-  onContinue: () => void;
+  onContinue: (choice: ActivationChoice) => void;
 }
 
 const ASSISTANT_DEFAULTS: Record<Platform, string> = {
@@ -47,7 +46,6 @@ export default function ActivationStep({
   saving,
   error,
   canRegister,
-  onSave,
   onContinue,
 }: Props) {
   const { t } = useTranslation();
@@ -149,18 +147,17 @@ export default function ActivationStep({
   const saveAssistantHotkey = useCallback(
     async (hotkey: string) => {
       assistantErrorRef.current = null;
-      if (!window.electronAPI?.updateHotkey) {
-        setAssistantHotkey(hotkey);
-        return true;
-      }
-      const registered = await window.electronAPI.updateHotkey(hotkey);
-      const ok = Boolean(registered?.success !== false);
-      if (!ok) {
-        assistantErrorRef.current = registered?.message ?? t("localOnboarding.activation.registerFailed");
+      // The assistant chord lives in the voiceAgent slot (store key
+      // voiceAgentKey) — registering it on the dictation channel would
+      // clobber the just-saved dictation hotkey. The store setter also
+      // persists to localStorage and rolls back on registration failure.
+      const result = await useSettingsStore.getState().setVoiceAgentKey(hotkey);
+      if (!result?.success) {
+        assistantErrorRef.current = result?.message ?? t("localOnboarding.activation.registerFailed");
       } else {
         setAssistantHotkey(hotkey);
       }
-      return ok;
+      return Boolean(result?.success);
     },
     [t],
   );
@@ -291,7 +288,7 @@ export default function ActivationStep({
 
         {assistantEnabled && (dictationMode === "push" || saved?.assistantHotkey !== assistantHotkey) && (
           <>
-            <Separator />
+            <div className="h-px bg-border" aria-hidden="true" />
             <Card className="bg-default">
               <CardContent className="flex flex-col gap-4 p-4">
                 <CardTitle className="text-base">{t("localOnboarding.activation.assistant")}</CardTitle>
@@ -354,10 +351,21 @@ export default function ActivationStep({
         {saving && <div className="text-sm text-muted-foreground">{t("localOnboarding.activation.saving")}</div>}
 
         <div className="flex justify-end gap-2 mt-2">
-          <Button variant="outline" onClick={onContinue}>
+          <Button
+            variant="outline"
+            onClick={() => onContinue({ dictationMode, dictationHotkey, assistantHotkey, assistantEnabled })}
+          >
             {t("localOnboarding.activation.skip")}
           </Button>
-          <Button onClick={onContinue} disabled={!canProceed || saving}>
+          <Button
+            onClick={async () => {
+              const choice = { dictationMode, dictationHotkey, assistantHotkey, assistantEnabled };
+              if (await handleSave(choice)) {
+                onContinue(choice);
+              }
+            }}
+            disabled={!canProceed || saving}
+          >
             {t("localOnboarding.activation.continue")}
           </Button>
         </div>

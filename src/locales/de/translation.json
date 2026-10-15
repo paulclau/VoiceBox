@@ -4876,5 +4876,115 @@
       "provider": "Anbieter",
       "requestId": "Anfrage-ID"
     }
+  },
+  "localOnboarding": {
+    "shell": {
+      "loading": "Wird eingerichtet…",
+      "title": "Lokales Diktieren einrichten",
+      "description": "Alles läuft auf deinem Gerät – wähle deine Sprachen, lade die Modelle und teste dein Mikrofon."
+    },
+    "progress": {
+      "detection": "Gerät prüfen",
+      "languages": "Sprachen",
+      "stack": "Modelle",
+      "download": "Download",
+      "micTest": "Mikrofontest",
+      "activation": "Aktivierung"
+    },
+    "detection": {
+      "loading": "Gerät wird geprüft…",
+      "retry": "Erneut versuchen",
+      "title": "Dein Gerät wird geprüft",
+      "description": "Wir prüfen Plattform und Hardware, um passende lokale Modelle zu empfehlen.",
+      "resultLabel": "Erkannte Hardware",
+      "platform": "Plattform: {{platform}}",
+      "class": "Profil: {{class}}",
+      "ramHint": "Arbeitsspeicher: {{hint}}",
+      "diskHint": "Speicher: {{hint}}",
+      "hasGpuRuntime": "GPU-Beschleunigung: {{yes}}",
+      "hasStreamingRuntime": "Live-Transkription: {{yes}}",
+      "continue": "Weiter"
+    },
+    "languages": {
+      "title": "In welchen Sprachen diktierst du?",
+      "description": "Damit empfehlen wir Transkriptionsmodelle für deine Sprachen.",
+      "searchPlaceholder": "Sprachen suchen…",
+      "noResults": "Keine Sprache gefunden.",
+      "selected": "Ausgewählt",
+      "continue": "Weiter ({{count}})"
+    },
+    "stack": {
+      "loading": "Die besten Modelle werden gesucht…",
+      "continueWithoutRecommendation": "Ohne Empfehlung fortfahren",
+      "title": "Empfohlenes Setup",
+      "description": "Diese Modelle laufen vollständig auf deinem Gerät. Du kannst sie später in den Einstellungen ändern.",
+      "transcription": "Transkription",
+      "assistant": "Assistent",
+      "chipStreaming": "Live",
+      "chipOffline": "Offline",
+      "translationPairs": "Übersetzung",
+      "translationPairsDescription": "Integrierte Übersetzungsrichtungen dieser Modelle.",
+      "continue": "Weiter",
+      "saving": "Wird gespeichert…"
+    },
+    "download": {
+      "loading": "Downloads werden vorbereitet…",
+      "title": "Modelle laden",
+      "description": "Modelle werden einmal geladen und auf deinem Gerät gespeichert.",
+      "errorTitle": "Etwas ist schiefgelaufen",
+      "installed": "Installiert",
+      "phase": {
+        "progress": "Wird geladen… {{percent}} %",
+        "installing": "Wird installiert… {{percent}} %",
+        "complete": "Fertig",
+        "failed": "Fehlgeschlagen"
+      },
+      "retry": "Wiederholen",
+      "cancel": "Abbrechen",
+      "download": "Laden",
+      "failedItem": "Download fehlgeschlagen",
+      "failedGeneric": "Der Download ist fehlgeschlagen. Prüfe deine Verbindung und versuche es erneut.",
+      "someFailed": "Einige Downloads sind fehlgeschlagen – wiederhole sie, um fortzufahren.",
+      "overallStatus": "{{phase}} · {{percent}} %",
+      "allInstalled": "Weiter"
+    },
+    "micTest": {
+      "loading": "Mikrofontest wird vorbereitet…",
+      "title": "Mikrofon testen",
+      "description": "Nimm eine kurze Probe auf, um die lokale Transkription zu prüfen.",
+      "testLabel": "Mikrofon",
+      "recording": "Nimmt auf…",
+      "idle": "Bereit",
+      "transcribing": "Wird transkribiert…",
+      "stop": "Stopp",
+      "start": "Aufnehmen",
+      "result": "Transkript",
+      "retry": "Wiederholen",
+      "continue": "Weiter",
+      "pending": "Drücke „Aufnehmen“ und sprich ein paar Worte.",
+      "skip": "Überspringen"
+    },
+    "activation": {
+      "dictationLabel": "Diktat",
+      "assistantLabel": "Sprachassistent",
+      "dictationRequired": "Wähle einen Diktat-Hotkey, um fortzufahren.",
+      "assistantRequired": "Wähle einen Assistenten-Hotkey oder deaktiviere den Assistenten.",
+      "registerFailed": "Dieser Hotkey konnte nicht registriert werden.",
+      "title": "Diktat aktivieren",
+      "description": "Wähle, wie du das Diktat startest. Einmal drücken zum Starten, erneut zum Stoppen.",
+      "dictation": "Diktat",
+      "tap": "Drücken",
+      "hold": "Halten",
+      "pushUnavailable": "Halten zum Sprechen wird für diesen Hotkey nicht unterstützt – Umschalten per Tastendruck wird verwendet.",
+      "customPrompt": "Hotkey eingeben (z. B. Control+Shift+Space):",
+      "invalidHotkey": "Dieser Hotkey ist ungültig.",
+      "custom": "Eigene…",
+      "selectHotkey": "Wähle oben einen Hotkey.",
+      "assistant": "Sprachassistent",
+      "selectAssistantHotkey": "Wähle einen Assistenten-Hotkey.",
+      "saving": "Wird gespeichert…",
+      "skip": "Überspringen",
+      "continue": "Fertigstellen"
+    }
   }
 }

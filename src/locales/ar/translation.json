@@ -4998,5 +4998,115 @@
       "provider": "المزوّد",
       "requestId": "معرّف الطلب"
     }
+  },
+  "localOnboarding": {
+    "shell": {
+      "loading": "جارٍ الإعداد…",
+      "title": "إعداد الإملاء المحلي",
+      "description": "كل شيء يعمل على جهازك: اختر لغاتك، وحمّل النماذج، واختبر الميكروفون."
+    },
+    "progress": {
+      "detection": "فحص الجهاز",
+      "languages": "اللغات",
+      "stack": "النماذج",
+      "download": "التنزيل",
+      "micTest": "اختبار الميكروفون",
+      "activation": "التفعيل"
+    },
+    "detection": {
+      "loading": "جارٍ فحص جهازك…",
+      "retry": "إعادة المحاولة",
+      "title": "فحص جهازك",
+      "description": "نطّلع على منصّتك وعتادك لترشيح نماذج تعمل بكفاءة محليًا.",
+      "resultLabel": "العتاد المكتشف",
+      "platform": "المنصة: {{platform}}",
+      "class": "الفئة: {{class}}",
+      "ramHint": "الذاكرة: {{hint}}",
+      "diskHint": "التخزين: {{hint}}",
+      "hasGpuRuntime": "تسريع GPU: {{yes}}",
+      "hasStreamingRuntime": "التفريغ المباشر: {{yes}}",
+      "continue": "متابعة"
+    },
+    "languages": {
+      "title": "بأي لغات تُملي؟",
+      "description": "نستخدم ذلك لترشيح نماذج تفريغ تغطي لغاتك.",
+      "searchPlaceholder": "ابحث عن اللغات…",
+      "noResults": "لا توجد لغات مطابقة.",
+      "selected": "محددة",
+      "continue": "متابعة ({{count}})"
+    },
+    "stack": {
+      "loading": "جارٍ إيجاد أفضل النماذج لك…",
+      "continueWithoutRecommendation": "المتابعة دون ترشيحات",
+      "title": "الإعداد المقترح",
+      "description": "تعمل هذه النماذج بالكامل على جهازك. يمكنك تغييرها لاحقًا في الإعدادات.",
+      "transcription": "التفريغ",
+      "assistant": "المساعد",
+      "chipStreaming": "مباشر",
+      "chipOffline": "دون اتصال",
+      "translationPairs": "الترجمة",
+      "translationPairsDescription": "اتجاهات الترجمة المدمجة لهذه النماذج.",
+      "continue": "متابعة",
+      "saving": "جارٍ الحفظ…"
+    },
+    "download": {
+      "loading": "جارٍ تجهيز التنزيلات…",
+      "title": "تنزيل النماذج",
+      "description": "تُنزَّل النماذج مرة واحدة وتُحفظ على جهازك.",
+      "errorTitle": "حدث خطأ ما",
+      "installed": "مثبّت",
+      "phase": {
+        "progress": "جارٍ التنزيل… {{percent}}٪",
+        "installing": "جارٍ التثبيت… {{percent}}٪",
+        "complete": "اكتمل",
+        "failed": "فشل"
+      },
+      "retry": "إعادة المحاولة",
+      "cancel": "إلغاء",
+      "download": "تنزيل",
+      "failedItem": "فشل التنزيل",
+      "failedGeneric": "فشل التنزيل. تحقق من اتصالك وحاول مجددًا.",
+      "someFailed": "فشلت بعض التنزيلات — أعد محاولتها للمتابعة.",
+      "overallStatus": "{{phase}} · {{percent}}٪",
+      "allInstalled": "متابعة"
+    },
+    "micTest": {
+      "loading": "جارٍ تجهيز الاختبار…",
+      "title": "اختبر الميكروفون",
+      "description": "سجّل مقطعًا قصيرًا للتأكد من عمل التفريغ المحلي.",
+      "testLabel": "الميكروفون",
+      "recording": "جارٍ التسجيل…",
+      "idle": "خامل",
+      "transcribing": "جارٍ التفريغ…",
+      "stop": "إيقاف",
+      "start": "تسجيل",
+      "result": "النص",
+      "retry": "إعادة المحاولة",
+      "continue": "متابعة",
+      "pending": "اضغط تسجيل وقل بضع كلمات.",
+      "skip": "تخطي"
+    },
+    "activation": {
+      "dictationLabel": "الإملاء",
+      "assistantLabel": "المساعد الصوتي",
+      "dictationRequired": "اختر مفتاح الإملاء للمتابعة.",
+      "assistantRequired": "اختر مفتاح المساعد أو أوقف المساعد.",
+      "registerFailed": "تعذّر تسجيل هذا المفتاح.",
+      "title": "تفعيل الإملاء",
+      "description": "اختر طريقة بدء الإملاء. اضغط مرة للبدء ومرة أخرى للإيقاف.",
+      "dictation": "الإملاء",
+      "tap": "ضغطة",
+      "hold": "ضغط مطوّل",
+      "pushUnavailable": "التحدث بالضغط غير مدعوم لهذا المفتاح — سيُستخدم التبديل بالضغط.",
+      "customPrompt": "أدخل مفتاحًا (مثل Control+Shift+Space):",
+      "invalidHotkey": "هذا المفتاح غير صالح.",
+      "custom": "مخصص…",
+      "selectHotkey": "اختر مفتاحًا أعلاه.",
+      "assistant": "المساعد الصوتي",
+      "selectAssistantHotkey": "اختر مفتاح المساعد.",
+      "saving": "جارٍ الحفظ…",
+      "skip": "تخطي",
+      "continue": "إنهاء"
+    }
   }
 }

@@ -1,5 +1,5 @@
-import { Button } from "../../ui/Button";
-import { Card, CardDescription, CardTitle } from "../../ui/Card";
+import { Button } from "../ui/button";
+import { CardDescription, CardTitle } from "../ui/card";
 import type { LocalStackModel } from "../../lib/recommendedLocalStack";
 
 interface Props {

@@ -4876,5 +4876,115 @@
       "provider": "Fournisseur",
       "requestId": "ID de requête"
     }
+  },
+  "localOnboarding": {
+    "shell": {
+      "loading": "Configuration…",
+      "title": "Configurer la dictée locale",
+      "description": "Tout fonctionne sur votre appareil : choisissez vos langues, téléchargez les modèles et testez votre micro."
+    },
+    "progress": {
+      "detection": "Appareil",
+      "languages": "Langues",
+      "stack": "Modèles",
+      "download": "Téléchargement",
+      "micTest": "Test micro",
+      "activation": "Activation"
+    },
+    "detection": {
+      "loading": "Analyse de votre appareil…",
+      "retry": "Réessayer",
+      "title": "Analyse de votre appareil",
+      "description": "Nous examinons votre plateforme et votre matériel pour recommander des modèles locaux adaptés.",
+      "resultLabel": "Matériel détecté",
+      "platform": "Plateforme : {{platform}}",
+      "class": "Profil : {{class}}",
+      "ramHint": "Mémoire : {{hint}}",
+      "diskHint": "Stockage : {{hint}}",
+      "hasGpuRuntime": "Accélération GPU : {{yes}}",
+      "hasStreamingRuntime": "Transcription en direct : {{yes}}",
+      "continue": "Continuer"
+    },
+    "languages": {
+      "title": "Dans quelles langues dictez-vous ?",
+      "description": "Cela nous sert à recommander des modèles de transcription adaptés.",
+      "searchPlaceholder": "Rechercher des langues…",
+      "noResults": "Aucune langue trouvée.",
+      "selected": "Sélectionnée",
+      "continue": "Continuer ({{count}})"
+    },
+    "stack": {
+      "loading": "Recherche des meilleurs modèles…",
+      "continueWithoutRecommendation": "Continuer sans recommandations",
+      "title": "Configuration recommandée",
+      "description": "Ces modèles fonctionnent entièrement sur votre appareil. Vous pourrez les changer dans Réglages.",
+      "transcription": "Transcription",
+      "assistant": "Assistant",
+      "chipStreaming": "En direct",
+      "chipOffline": "Hors ligne",
+      "translationPairs": "Traduction",
+      "translationPairsDescription": "Sens de traduction intégrés de ces modèles.",
+      "continue": "Continuer",
+      "saving": "Enregistrement…"
+    },
+    "download": {
+      "loading": "Préparation des téléchargements…",
+      "title": "Télécharger les modèles",
+      "description": "Les modèles sont téléchargés une fois et stockés sur votre appareil.",
+      "errorTitle": "Un problème est survenu",
+      "installed": "Installé",
+      "phase": {
+        "progress": "Téléchargement… {{percent}} %",
+        "installing": "Installation… {{percent}} %",
+        "complete": "Terminé",
+        "failed": "Échec"
+      },
+      "retry": "Réessayer",
+      "cancel": "Annuler",
+      "download": "Télécharger",
+      "failedItem": "Échec du téléchargement",
+      "failedGeneric": "Le téléchargement a échoué. Vérifiez votre connexion et réessayez.",
+      "someFailed": "Certains téléchargements ont échoué — réessayez pour continuer.",
+      "overallStatus": "{{phase}} · {{percent}} %",
+      "allInstalled": "Continuer"
+    },
+    "micTest": {
+      "loading": "Préparation du test…",
+      "title": "Testez votre micro",
+      "description": "Enregistrez un court extrait pour vérifier la transcription locale.",
+      "testLabel": "Microphone",
+      "recording": "Enregistrement…",
+      "idle": "Inactif",
+      "transcribing": "Transcription…",
+      "stop": "Arrêter",
+      "start": "Enregistrer",
+      "result": "Transcription",
+      "retry": "Réessayer",
+      "continue": "Continuer",
+      "pending": "Appuyez sur Enregistrer et dites quelques mots.",
+      "skip": "Passer"
+    },
+    "activation": {
+      "dictationLabel": "Dictée",
+      "assistantLabel": "Assistant vocal",
+      "dictationRequired": "Choisissez un raccourci de dictée pour continuer.",
+      "assistantRequired": "Choisissez un raccourci d'assistant ou désactivez l'assistant.",
+      "registerFailed": "Impossible d'enregistrer ce raccourci.",
+      "title": "Activer la dictée",
+      "description": "Choisissez comment lancer la dictée. Appuyez une fois pour démarrer, encore une fois pour arrêter.",
+      "dictation": "Dictée",
+      "tap": "Appuyer",
+      "hold": "Maintenir",
+      "pushUnavailable": "Le mode parler-maintenu n'est pas pris en charge pour ce raccourci — le mode bascule sera utilisé.",
+      "customPrompt": "Saisissez un raccourci (p. ex. Control+Shift+Space) :",
+      "invalidHotkey": "Ce raccourci n'est pas valide.",
+      "custom": "Personnalisé…",
+      "selectHotkey": "Choisissez un raccourci ci-dessus.",
+      "assistant": "Assistant vocal",
+      "selectAssistantHotkey": "Choisissez un raccourci d'assistant.",
+      "saving": "Enregistrement…",
+      "skip": "Passer",
+      "continue": "Terminer"
+    }
   }
 }

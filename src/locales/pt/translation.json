@@ -4876,5 +4876,115 @@
       "provider": "Provedor",
       "requestId": "ID da solicitação"
     }
+  },
+  "localOnboarding": {
+    "shell": {
+      "loading": "Configurando…",
+      "title": "Configurar o ditado local",
+      "description": "Tudo roda no seu dispositivo: escolha os idiomas, baixe os modelos e teste o microfone."
+    },
+    "progress": {
+      "detection": "Dispositivo",
+      "languages": "Idiomas",
+      "stack": "Modelos",
+      "download": "Download",
+      "micTest": "Teste de microfone",
+      "activation": "Ativação"
+    },
+    "detection": {
+      "loading": "Analisando seu dispositivo…",
+      "retry": "Tentar de novo",
+      "title": "Analisando seu dispositivo",
+      "description": "Verificamos plataforma e hardware para recomendar modelos que rodam bem localmente.",
+      "resultLabel": "Hardware detectado",
+      "platform": "Plataforma: {{platform}}",
+      "class": "Perfil: {{class}}",
+      "ramHint": "Memória: {{hint}}",
+      "diskHint": "Armazenamento: {{hint}}",
+      "hasGpuRuntime": "Aceleração de GPU: {{yes}}",
+      "hasStreamingRuntime": "Transcrição ao vivo: {{yes}}",
+      "continue": "Continuar"
+    },
+    "languages": {
+      "title": "Em quais idiomas você dita?",
+      "description": "Usamos isso para recomendar modelos de transcrição adequados.",
+      "searchPlaceholder": "Pesquisar idiomas…",
+      "noResults": "Nenhum idioma encontrado.",
+      "selected": "Selecionado",
+      "continue": "Continuar ({{count}})"
+    },
+    "stack": {
+      "loading": "Buscando os melhores modelos…",
+      "continueWithoutRecommendation": "Continuar sem recomendações",
+      "title": "Configuração recomendada",
+      "description": "Esses modelos rodam totalmente no seu dispositivo. Você pode trocá-los em Ajustes.",
+      "transcription": "Transcrição",
+      "assistant": "Assistente",
+      "chipStreaming": "Ao vivo",
+      "chipOffline": "Offline",
+      "translationPairs": "Tradução",
+      "translationPairsDescription": "Direções de tradução integradas destes modelos.",
+      "continue": "Continuar",
+      "saving": "Salvando…"
+    },
+    "download": {
+      "loading": "Preparando downloads…",
+      "title": "Baixar modelos",
+      "description": "Os modelos são baixados uma vez e ficam no seu dispositivo.",
+      "errorTitle": "Algo deu errado",
+      "installed": "Instalado",
+      "phase": {
+        "progress": "Baixando… {{percent}} %",
+        "installing": "Instalando… {{percent}} %",
+        "complete": "Concluído",
+        "failed": "Falhou"
+      },
+      "retry": "Tentar de novo",
+      "cancel": "Cancelar",
+      "download": "Baixar",
+      "failedItem": "Download falhou",
+      "failedGeneric": "O download falhou. Verifique sua conexão e tente de novo.",
+      "someFailed": "Alguns downloads falharam — tente de novo para continuar.",
+      "overallStatus": "{{phase}} · {{percent}} %",
+      "allInstalled": "Continuar"
+    },
+    "micTest": {
+      "loading": "Preparando o teste…",
+      "title": "Teste seu microfone",
+      "description": "Grave uma amostra curta para verificar a transcrição local.",
+      "testLabel": "Microfone",
+      "recording": "Gravando…",
+      "idle": "Parado",
+      "transcribing": "Transcrevendo…",
+      "stop": "Parar",
+      "start": "Gravar",
+      "result": "Transcrição",
+      "retry": "Tentar de novo",
+      "continue": "Continuar",
+      "pending": "Aperte Gravar e diga algumas palavras.",
+      "skip": "Pular"
+    },
+    "activation": {
+      "dictationLabel": "Ditado",
+      "assistantLabel": "Assistente de voz",
+      "dictationRequired": "Escolha um atalho de ditado para continuar.",
+      "assistantRequired": "Escolha um atalho de assistente ou desligue o assistente.",
+      "registerFailed": "Não foi possível registrar esse atalho.",
+      "title": "Ativar o ditado",
+      "description": "Escolha como iniciar o ditado. Aperte uma vez para começar, de novo para parar.",
+      "dictation": "Ditado",
+      "tap": "Apertar",
+      "hold": "Segurar",
+      "pushUnavailable": "Falar-segurando não funciona com este atalho — será usado alternar por aperto.",
+      "customPrompt": "Digite um atalho (ex.: Control+Shift+Space):",
+      "invalidHotkey": "Esse atalho não é válido.",
+      "custom": "Personalizado…",
+      "selectHotkey": "Escolha um atalho acima.",
+      "assistant": "Assistente de voz",
+      "selectAssistantHotkey": "Escolha um atalho de assistente.",
+      "saving": "Salvando…",
+      "skip": "Pular",
+      "continue": "Concluir"
+    }
   }
 }

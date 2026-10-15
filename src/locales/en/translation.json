@@ -4876,5 +4876,115 @@
       "provider": "Provider",
       "requestId": "Request ID"
     }
+  },
+  "localOnboarding": {
+    "shell": {
+      "loading": "Setting things up…",
+      "title": "Set up local dictation",
+      "description": "Everything runs on your device — pick your languages, download the models, and test your microphone."
+    },
+    "progress": {
+      "detection": "Check device",
+      "languages": "Languages",
+      "stack": "Models",
+      "download": "Download",
+      "micTest": "Mic test",
+      "activation": "Activation"
+    },
+    "detection": {
+      "loading": "Checking your device…",
+      "retry": "Try again",
+      "title": "Checking your device",
+      "description": "We look at your platform and hardware to recommend models that run well locally.",
+      "resultLabel": "Detected hardware",
+      "platform": "Platform: {{platform}}",
+      "class": "Profile: {{class}}",
+      "ramHint": "Memory: {{hint}}",
+      "diskHint": "Storage: {{hint}}",
+      "hasGpuRuntime": "GPU acceleration: {{yes}}",
+      "hasStreamingRuntime": "Live transcription: {{yes}}",
+      "continue": "Continue"
+    },
+    "languages": {
+      "title": "Which languages do you dictate in?",
+      "description": "We use this to recommend transcription models that cover your languages.",
+      "searchPlaceholder": "Search languages…",
+      "noResults": "No languages match your search.",
+      "selected": "Selected",
+      "continue": "Continue ({{count}})"
+    },
+    "stack": {
+      "loading": "Finding the best models for you…",
+      "continueWithoutRecommendation": "Continue without recommendations",
+      "title": "Recommended setup",
+      "description": "These models run entirely on your device. You can change them later in Settings.",
+      "transcription": "Transcription",
+      "assistant": "Assistant",
+      "chipStreaming": "Live",
+      "chipOffline": "Offline",
+      "translationPairs": "Translation",
+      "translationPairsDescription": "Built-in translation directions for these models.",
+      "continue": "Continue",
+      "saving": "Saving…"
+    },
+    "download": {
+      "loading": "Preparing downloads…",
+      "title": "Download models",
+      "description": "Models are downloaded once and stored on your device.",
+      "errorTitle": "Something went wrong",
+      "installed": "Installed",
+      "phase": {
+        "progress": "Downloading… {{percent}}%",
+        "installing": "Installing… {{percent}}%",
+        "complete": "Complete",
+        "failed": "Failed"
+      },
+      "retry": "Retry",
+      "cancel": "Cancel",
+      "download": "Download",
+      "failedItem": "Download failed",
+      "failedGeneric": "The download failed. Check your connection and try again.",
+      "someFailed": "Some downloads failed — retry them to continue.",
+      "overallStatus": "{{phase}} · {{percent}}%",
+      "allInstalled": "Continue"
+    },
+    "micTest": {
+      "loading": "Preparing the mic test…",
+      "title": "Test your microphone",
+      "description": "Record a short sample to make sure local transcription works.",
+      "testLabel": "Microphone",
+      "recording": "Recording…",
+      "idle": "Idle",
+      "transcribing": "Transcribing…",
+      "stop": "Stop",
+      "start": "Record",
+      "result": "Transcript",
+      "retry": "Retry",
+      "continue": "Continue",
+      "pending": "Press Record and say a few words.",
+      "skip": "Skip"
+    },
+    "activation": {
+      "dictationLabel": "Dictation",
+      "assistantLabel": "Voice assistant",
+      "dictationRequired": "Choose a dictation hotkey to continue.",
+      "assistantRequired": "Choose an assistant hotkey or turn the assistant off.",
+      "registerFailed": "Couldn't register that hotkey.",
+      "title": "Activate dictation",
+      "description": "Pick how you start dictation. Press the hotkey once to start, again to stop.",
+      "dictation": "Dictation",
+      "tap": "Press",
+      "hold": "Hold",
+      "pushUnavailable": "Hold-to-talk isn't supported for this hotkey — press-to-toggle will be used.",
+      "customPrompt": "Enter a hotkey (e.g. Control+Shift+Space):",
+      "invalidHotkey": "That hotkey isn't valid.",
+      "custom": "Custom…",
+      "selectHotkey": "Choose a hotkey above.",
+      "assistant": "Voice assistant",
+      "selectAssistantHotkey": "Choose an assistant hotkey.",
+      "saving": "Saving…",
+      "skip": "Skip",
+      "continue": "Finish"
+    }
   }
 }

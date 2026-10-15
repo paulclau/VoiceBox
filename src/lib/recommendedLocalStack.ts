@@ -7,6 +7,7 @@ export type LocalStackModel = {
   sizeLabel: string;
   runtime?: string;
   quantization?: string;
+  downloaded?: boolean;
 };
 
 export type LocalStackRecommendation = {

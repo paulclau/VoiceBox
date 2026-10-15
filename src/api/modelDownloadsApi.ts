@@ -36,50 +36,100 @@ export async function downloadModel(
   return downloadUnknown(resolved, onProgress);
 }
 
+function toProgress(modelName: string, data: any): ModelDownloadProgress {
+  const raw = typeof data?.percentage === "number"
+    ? data.percentage
+    : typeof data?.downloadProgress === "number"
+      ? data.downloadProgress
+      : typeof data?.progress === "number"
+        ? data.progress
+        : 0;
+  const type = data?.type === "installing" || data?.isInstalling ? "installing" : "progress";
+  return {
+    type,
+    model: typeof data?.model === "string" ? data.model : modelName,
+    percentage: raw,
+    downloadedBytes: data?.downloadedBytes ?? data?.downloaded_bytes,
+    totalBytes: data?.totalBytes ?? data?.total_bytes,
+  };
+}
+
+function subscribeProgress(
+  subscribe: ((cb: (event: any, data: any) => void) => () => void) | undefined,
+  modelName: string,
+  onProgress?: (data: ModelDownloadProgress) => void,
+): (() => void) | undefined {
+  if (!subscribe || !onProgress) return undefined;
+  try {
+    return subscribe((_event: any, data: any) => {
+      if (!data || (data.model && data.model !== modelName)) return;
+      onProgress(toProgress(modelName, data));
+    });
+  } catch {
+    return undefined;
+  }
+}
+
 async function downloadParakeet(
   modelName: string,
   onProgress?: (data: ModelDownloadProgress) => void,
 ): Promise<ModelDownloadResult> {
-  return window.electronAPI?.downloadParakeetModel?.(modelName).then((result: any) => {
-      if (result && typeof result === "object") {
-        const ok = Boolean(result.success !== false);
-        return {
-          success: ok,
-          model: result.model ?? modelName,
-          error: ok ? undefined : String(result.error ?? result.message ?? "parakeet_download_failed"),
-        };
-      }
-      if (typeof result === "string" && result.trim()) {
-        return { success: true, model: modelName };
-      }
-      return { success: true, model: modelName };
-    }).catch((error: any) => ({
-    success: false,
-    error: normalizeError(error),
-  }));
-}
-
-async function downloadWhisper(
-  modelName: string,
-  onProgress?: (data: ModelDownloadProgress) => void,
-): Promise<ModelDownloadResult> {
-  return window.electronAPI?.downloadWhisperModel?.(modelName).then((result: any) => {
+  const api = (window as any).electronAPI;
+  if (!api?.downloadParakeetModel) return { success: true, model: modelName };
+  const unsubscribe = subscribeProgress(api.onParakeetDownloadProgress?.bind(api), modelName, onProgress);
+  try {
+    const result = await api.downloadParakeetModel(modelName);
     if (result && typeof result === "object") {
       const ok = Boolean(result.success !== false);
       return {
         success: ok,
-        model: result.model ?? modelName,
-        error: ok ? undefined : String(result.error ?? result.message ?? "whisper_download_failed"),
+        model: typeof result.model === "string" ? result.model : modelName,
+        error: ok ? undefined : String(result.error ?? "parakeet_download_failed"),
       };
     }
     if (typeof result === "string" && result.trim()) {
       return { success: true, model: modelName };
     }
     return { success: true, model: modelName };
-  }).catch((error: any) => ({
-    success: false,
-    error: normalizeError(error),
-  }));
+  } catch (error: any) {
+    return {
+      success: false,
+      error: normalizeError(error),
+    };
+  } finally {
+    try { unsubscribe?.(); } catch { /* noop */ }
+  }
+}
+
+async function downloadWhisper(
+  modelName: string,
+  onProgress?: (data: ModelDownloadProgress) => void,
+): Promise<ModelDownloadResult> {
+  const api = (window as any).electronAPI;
+  if (!api?.downloadWhisperModel) return { success: true, model: modelName };
+  const unsubscribe = subscribeProgress(api.onWhisperDownloadProgress?.bind(api), modelName, onProgress);
+  try {
+    const result = await api.downloadWhisperModel(modelName);
+    if (result && typeof result === "object") {
+      const ok = Boolean(result.success !== false);
+      return {
+        success: ok,
+        model: typeof result.model === "string" ? result.model : modelName,
+        error: ok ? undefined : String(result.error ?? "whisper_download_failed"),
+      };
+    }
+    if (typeof result === "string" && result.trim()) {
+      return { success: true, model: modelName };
+    }
+    return { success: true, model: modelName };
+  } catch (error: any) {
+    return {
+      success: false,
+      error: normalizeError(error),
+    };
+  } finally {
+    try { unsubscribe?.(); } catch { /* noop */ }
+  }
 }
 
 async function downloadUnknown(
@@ -87,13 +137,14 @@ async function downloadUnknown(
   onProgress?: (data: ModelDownloadProgress) => void,
 ): Promise<ModelDownloadResult> {
   try {
-    const result = await window.electronAPI?.modelDownload?.(modelName);
+    const api = (window as any).electronAPI;
+    const result = await api?.modelDownload?.(modelName);
     if (result && typeof result === "object") {
       const ok = Boolean(result.success !== false);
       return {
         success: ok,
-        model: result.model ?? modelName,
-        error: ok ? undefined : String(result.error ?? result.message ?? "model_download_failed"),
+        model: typeof result.model === "string" ? result.model : (result.path ?? modelName),
+        error: ok ? undefined : String(result.error ?? "model_download_failed"),
       };
     }
     return { success: true, model: modelName };

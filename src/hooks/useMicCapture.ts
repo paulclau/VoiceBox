@@ -46,11 +46,14 @@ export function useMicCapture(options: UseMicCaptureOptions = {}) {
           optionsRef.current.onError?.(String(error));
           return;
         }
-        const value: LocalTranscriptionResult =
-          result.text.trim()
-            ? { ok: true, text: result.text.trim() }
-            : { ok: false, error: t("hooks.audioRecording.noAudio.description") ?? "parakeet_empty" };
-        setLastError(value.ok ? null : value.error);
+        if (result.text.trim()) {
+          const value: LocalTranscriptionResult = { ok: true, text: result.text.trim() };
+          setLastError(null);
+          optionsRef.current.onResult?.(value);
+          return;
+        }
+        const value: LocalTranscriptionResult = { ok: false, error: t("hooks.audioRecording.noAudio.description") ?? "parakeet_empty" };
+        setLastError(value.error);
         optionsRef.current.onResult?.(value);
       },
     },

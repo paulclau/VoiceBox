@@ -5,6 +5,8 @@ export interface SettledControlPanelWindowState {
   isLoading: boolean;
   isWaitingForPolicyStart: boolean;
   showOnboarding: boolean;
+  /** Local-first setup shell — owns window sizing like legacy onboarding. */
+  showLocalSetup?: boolean;
   needsReauth: boolean;
 }
 
@@ -15,7 +17,8 @@ export function resolveSettledControlPanelWindowMode(
     !state.isControlPanel ||
     state.isLoading ||
     state.isWaitingForPolicyStart ||
-    state.showOnboarding
+    state.showOnboarding ||
+    state.showLocalSetup
   ) {
     return null;
   }

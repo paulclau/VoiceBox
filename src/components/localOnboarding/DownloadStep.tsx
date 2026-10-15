@@ -1,30 +1,34 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { Loader2 } from "../icons";
 import { StepHeader } from "./StepHeader";
-import { Spinner } from "../../ui/Spinner";
-import { Button } from "../../ui/Button";
-import { Card, CardContent, CardDescription, CardTitle } from "../../ui/Card";
-import { Alert, AlertDescription, AlertTitle } from "../../ui/Alert";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardDescription, CardTitle } from "../ui/card";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { useDownloadCoordinator } from "../../hooks/useDownloadCoordinator";
 import type { LocalSetupItem, LocalSetupProgress, DownloadPhase } from "../../lib/localSetupState";
+import { isComplete } from "../../lib/localSetupState";
 
 interface Props {
   summary: LocalSetupItem[];
-  progress: LocalSetupProgress | null;
   loading: boolean;
   error: string | null;
-  onStartDownload: () => void;
-  onCancel: () => void;
+  onProgress?: (progress: LocalSetupProgress) => void;
   onContinue: () => void;
 }
 
-export default function DownloadStep({ summary, progress, loading, error, onStartDownload, onCancel, onContinue }: Props) {
+export default function DownloadStep({ summary, loading, error, onProgress, onContinue }: Props) {
   const { t } = useTranslation();
-  const { start: startDownload, cancel: cancelDownload } = useDownloadCoordinator({
+  const { progress, start: startDownload, cancel: cancelDownload } = useDownloadCoordinator({
     items: summary,
-    onStart: onStartDownload,
-    onCancel,
+    onProgress,
   });
+
+  useEffect(() => {
+    if (summary.length > 0 && !progress) {
+      startDownload();
+    }
+  }, [summary, progress, startDownload]);
 
   const itemProgress = useCallback(
     (modelId: string) => {
@@ -47,30 +51,17 @@ export default function DownloadStep({ summary, progress, loading, error, onStar
       return { percent: avgP, phase: progress.active.some((a) => a.phase === "installing") ? "installing" : "progress" };
     }
     if (progress.failed.length > 0) return { percent: 0, phase: "failed" as DownloadPhase };
-    if (progress.done.length === summary.length) return { percent: 100, phase: "complete" as DownloadPhase };
+    if (progress.done.length >= summary.length && summary.length > 0) return { percent: 100, phase: "complete" as DownloadPhase };
     return null;
   }, [progress, summary]);
 
   const overallState = overall();
-
-  const failedItem = useCallback(
-    (modelId: string) => progress?.failed.find((f) => f.modelId === modelId) ?? null,
-    [progress],
-  );
-
-  const handleStart = useCallback(() => {
-    startDownload();
-  }, [startDownload]);
-
-  const handleCancel = useCallback(() => {
-    cancelDownload();
-    onCancel();
-  }, [cancelDownload, onCancel]);
+  const complete = isComplete(progress, summary);
 
   if (loading) {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-4 p-6">
-        <Spinner />
+        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         <p className="text-sm text-muted-foreground">{t("localOnboarding.download.loading")}</p>
       </div>
     );
@@ -93,7 +84,7 @@ export default function DownloadStep({ summary, progress, loading, error, onStar
       <div className="mt-4 flex flex-col gap-3">
         {summary.map((item) => {
           const prog = itemProgress(item.modelId);
-          const failed = failedItem(item.modelId);
+          const failed = progress?.failed.find((f) => f.modelId === item.modelId) ?? null;
           const done = progress?.done.some((d) => d.modelId === item.modelId);
 
           return (
@@ -130,24 +121,17 @@ export default function DownloadStep({ summary, progress, loading, error, onStar
                 )}
 
                 <div className="flex items-center gap-2">
-                  {done ? (
-                    <Button variant="ghost" size="sm" type="button" onClick={onContinue}>
-                      {t("localOnboarding.download.continue")}
-                    </Button>
-                  ) : prog ? (
+                  {done ? null : prog ? (
                     <Button
                       variant="outline"
                       size="sm"
                       type="button"
-                      disabled={
-                        progress?.active.some((a) => a.modelId === item.modelId) || prog.phase === "installing"
-                      }
-                      onClick={handleCancel}
+                      onClick={cancelDownload}
                     >
                       {prog.phase === "failed" ? t("localOnboarding.download.retry") : t("localOnboarding.download.cancel")}
                     </Button>
                   ) : (
-                    <Button size="sm" type="button" onClick={handleStart} className="ml-auto">
+                    <Button size="sm" type="button" onClick={startDownload} className="ml-auto">
                       {t("localOnboarding.download.download")}
                     </Button>
                   )}
@@ -164,7 +148,7 @@ export default function DownloadStep({ summary, progress, loading, error, onStar
                       size="sm"
                       type="button"
                       className="mt-2 w-full"
-                      onClick={handleStart}
+                      onClick={startDownload}
                     >
                       {t("localOnboarding.download.retry")}
                     </Button>
@@ -178,7 +162,7 @@ export default function DownloadStep({ summary, progress, loading, error, onStar
 
       {overallState && overallState.phase !== "complete" && (
         <div className="mt-6 flex items-center gap-3 rounded-lg border border-default bg-default p-4">
-          <Spinner size="sm" />
+          <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
           <p className="text-sm text-muted-foreground">
             {overallState.phase === "failed"
               ? t("localOnboarding.download.someFailed")
@@ -190,7 +174,7 @@ export default function DownloadStep({ summary, progress, loading, error, onStar
         </div>
       )}
 
-      {overallState?.phase === "complete" && (
+      {(complete || overallState?.phase === "complete") && (
         <div className="mt-6 flex justify-center">
           <Button size="lg" type="button" onClick={onContinue}>
             {t("localOnboarding.download.allInstalled")}

@@ -42,4 +42,8 @@ test("unsettled and onboarding routes leave window sizing to their owners", asyn
     resolveSettledControlPanelWindowMode({ ...settledState, showOnboarding: true }),
     null
   );
+  assert.equal(
+    resolveSettledControlPanelWindowMode({ ...settledState, showLocalSetup: true }),
+    null
+  );
 });

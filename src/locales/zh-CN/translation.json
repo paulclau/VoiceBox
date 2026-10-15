@@ -4876,5 +4876,115 @@
       "provider": "服务商",
       "requestId": "请求 ID"
     }
+  },
+  "localOnboarding": {
+    "shell": {
+      "loading": "正在设置…",
+      "title": "设置本地听写",
+      "description": "一切都在您的设备上运行:选择语言、下载模型并测试麦克风。"
+    },
+    "progress": {
+      "detection": "检测设备",
+      "languages": "语言",
+      "stack": "模型",
+      "download": "下载",
+      "micTest": "麦克风测试",
+      "activation": "激活"
+    },
+    "detection": {
+      "loading": "正在检测设备…",
+      "retry": "重试",
+      "title": "正在检测设备",
+      "description": "我们会查看您的平台和硬件,推荐适合本地运行的模型。",
+      "resultLabel": "检测到的硬件",
+      "platform": "平台:{{platform}}",
+      "class": "配置:{{class}}",
+      "ramHint": "内存:{{hint}}",
+      "diskHint": "存储:{{hint}}",
+      "hasGpuRuntime": "GPU 加速:{{yes}}",
+      "hasStreamingRuntime": "实时转写:{{yes}}",
+      "continue": "继续"
+    },
+    "languages": {
+      "title": "您使用哪些语言听写?",
+      "description": "我们据此推荐覆盖您语言的转写模型。",
+      "searchPlaceholder": "搜索语言…",
+      "noResults": "没有匹配的语言。",
+      "selected": "已选",
+      "continue": "继续 ({{count}})"
+    },
+    "stack": {
+      "loading": "正在为您寻找最佳模型…",
+      "continueWithoutRecommendation": "不使用推荐继续",
+      "title": "推荐配置",
+      "description": "这些模型完全在您的设备上运行,稍后可在“设置”中更改。",
+      "transcription": "转写",
+      "assistant": "助手",
+      "chipStreaming": "实时",
+      "chipOffline": "离线",
+      "translationPairs": "翻译",
+      "translationPairsDescription": "这些模型的内置翻译方向。",
+      "continue": "继续",
+      "saving": "正在保存…"
+    },
+    "download": {
+      "loading": "正在准备下载…",
+      "title": "下载模型",
+      "description": "模型只需下载一次,并保存在您的设备上。",
+      "errorTitle": "出了点问题",
+      "installed": "已安装",
+      "phase": {
+        "progress": "下载中…{{percent}}%",
+        "installing": "安装中…{{percent}}%",
+        "complete": "完成",
+        "failed": "失败"
+      },
+      "retry": "重试",
+      "cancel": "取消",
+      "download": "下载",
+      "failedItem": "下载失败",
+      "failedGeneric": "下载失败,请检查网络连接后重试。",
+      "someFailed": "部分下载失败,请重试后继续。",
+      "overallStatus": "{{phase}}·{{percent}}%",
+      "allInstalled": "继续"
+    },
+    "micTest": {
+      "loading": "正在准备麦克风测试…",
+      "title": "测试麦克风",
+      "description": "录制一小段音频,确认本地转写正常工作。",
+      "testLabel": "麦克风",
+      "recording": "录音中…",
+      "idle": "空闲",
+      "transcribing": "转写中…",
+      "stop": "停止",
+      "start": "录音",
+      "result": "转写结果",
+      "retry": "重试",
+      "continue": "继续",
+      "pending": "按下“录音”并说几句话。",
+      "skip": "跳过"
+    },
+    "activation": {
+      "dictationLabel": "听写",
+      "assistantLabel": "语音助手",
+      "dictationRequired": "请选择听写快捷键以继续。",
+      "assistantRequired": "请选择助手快捷键或关闭助手。",
+      "registerFailed": "无法注册该快捷键。",
+      "title": "激活听写",
+      "description": "选择启动听写的方式。按一次开始,再按一次停止。",
+      "dictation": "听写",
+      "tap": "点按",
+      "hold": "按住",
+      "pushUnavailable": "该快捷键不支持按住说话,将使用点按切换模式。",
+      "customPrompt": "输入快捷键(例如 Control+Shift+Space):",
+      "invalidHotkey": "该快捷键无效。",
+      "custom": "自定义…",
+      "selectHotkey": "请在上方选择快捷键。",
+      "assistant": "语音助手",
+      "selectAssistantHotkey": "请选择助手快捷键。",
+      "saving": "正在保存…",
+      "skip": "跳过",
+      "continue": "完成"
+    }
   }
 }

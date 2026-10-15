@@ -4876,5 +4876,115 @@
       "provider": "服務商",
       "requestId": "請求 ID"
     }
+  },
+  "localOnboarding": {
+    "shell": {
+      "loading": "正在設定…",
+      "title": "設定本地聽寫",
+      "description": "一切都在您的裝置上執行:選擇語言、下載模型並測試麥克風。"
+    },
+    "progress": {
+      "detection": "偵測裝置",
+      "languages": "語言",
+      "stack": "模型",
+      "download": "下載",
+      "micTest": "麥克風測試",
+      "activation": "啟用"
+    },
+    "detection": {
+      "loading": "正在偵測裝置…",
+      "retry": "重試",
+      "title": "正在偵測裝置",
+      "description": "我們會查看您的平台與硬體,推薦適合本機執行的模型。",
+      "resultLabel": "偵測到的硬體",
+      "platform": "平台:{{platform}}",
+      "class": "設定:{{class}}",
+      "ramHint": "記憶體:{{hint}}",
+      "diskHint": "儲存空間:{{hint}}",
+      "hasGpuRuntime": "GPU 加速:{{yes}}",
+      "hasStreamingRuntime": "即時轉寫:{{yes}}",
+      "continue": "繼續"
+    },
+    "languages": {
+      "title": "您使用哪些語言聽寫?",
+      "description": "我們據此推薦涵蓋您語言的轉寫模型。",
+      "searchPlaceholder": "搜尋語言…",
+      "noResults": "沒有相符的語言。",
+      "selected": "已選",
+      "continue": "繼續 ({{count}})"
+    },
+    "stack": {
+      "loading": "正在為您尋找最佳模型…",
+      "continueWithoutRecommendation": "不使用推薦繼續",
+      "title": "建議設定",
+      "description": "這些模型完全在您的裝置上執行,稍後可在「設定」中變更。",
+      "transcription": "轉寫",
+      "assistant": "助理",
+      "chipStreaming": "即時",
+      "chipOffline": "離線",
+      "translationPairs": "翻譯",
+      "translationPairsDescription": "這些模型的內建翻譯方向。",
+      "continue": "繼續",
+      "saving": "正在儲存…"
+    },
+    "download": {
+      "loading": "正在準備下載…",
+      "title": "下載模型",
+      "description": "模型只需下載一次,並儲存在您的裝置上。",
+      "errorTitle": "發生問題",
+      "installed": "已安裝",
+      "phase": {
+        "progress": "下載中…{{percent}}%",
+        "installing": "安裝中…{{percent}}%",
+        "complete": "完成",
+        "failed": "失敗"
+      },
+      "retry": "重試",
+      "cancel": "取消",
+      "download": "下載",
+      "failedItem": "下載失敗",
+      "failedGeneric": "下載失敗,請檢查網路連線後重試。",
+      "someFailed": "部分下載失敗,請重試後繼續。",
+      "overallStatus": "{{phase}}·{{percent}}%",
+      "allInstalled": "繼續"
+    },
+    "micTest": {
+      "loading": "正在準備麥克風測試…",
+      "title": "測試麥克風",
+      "description": "錄製一小段音訊,確認本地轉寫正常運作。",
+      "testLabel": "麥克風",
+      "recording": "錄音中…",
+      "idle": "閒置",
+      "transcribing": "轉寫中…",
+      "stop": "停止",
+      "start": "錄音",
+      "result": "轉寫結果",
+      "retry": "重試",
+      "continue": "繼續",
+      "pending": "按下「錄音」並說幾句話。",
+      "skip": "略過"
+    },
+    "activation": {
+      "dictationLabel": "聽寫",
+      "assistantLabel": "語音助理",
+      "dictationRequired": "請選擇聽寫快捷鍵以繼續。",
+      "assistantRequired": "請選擇助理快捷鍵或關閉助理。",
+      "registerFailed": "無法註冊該快捷鍵。",
+      "title": "啟用聽寫",
+      "description": "選擇啟動聽寫的方式。按一下開始,再按一下停止。",
+      "dictation": "聽寫",
+      "tap": "點按",
+      "hold": "按住",
+      "pushUnavailable": "該快捷鍵不支援按住說話,將使用點按切換模式。",
+      "customPrompt": "輸入快捷鍵(例如 Control+Shift+Space):",
+      "invalidHotkey": "該快捷鍵無效。",
+      "custom": "自訂…",
+      "selectHotkey": "請在上方選擇快捷鍵。",
+      "assistant": "語音助理",
+      "selectAssistantHotkey": "請選擇助理快捷鍵。",
+      "saving": "正在儲存…",
+      "skip": "略過",
+      "continue": "完成"
+    }
   }
 }

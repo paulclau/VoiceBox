@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { LocalSetupItem, LocalSetupProgress, LocalSetupProgressEntry, DownloadPhase } from "../lib/localSetupState";
+import type { LocalSetupItem, LocalSetupProgress, LocalSetupProgressEntry } from "../lib/localSetupState";
 import { downloadModel } from "../api/modelDownloadsApi";
 
 interface UseDownloadCoordinatorOptions {
@@ -7,6 +7,10 @@ interface UseDownloadCoordinatorOptions {
   onStart?: () => void;
   onCancel?: () => void;
   onProgress?: (progress: LocalSetupProgress) => void;
+}
+
+function entry(modelId: string): LocalSetupProgressEntry {
+  return { modelId, phase: "progress", percentage: 0 };
 }
 
 export function useDownloadCoordinator({
@@ -17,142 +21,119 @@ export function useDownloadCoordinator({
 }: UseDownloadCoordinatorOptions) {
   const [progress, setProgress] = useState<LocalSetupProgress | null>(null);
   const cancelRef = useRef(false);
+  const onProgressRef = useRef(onProgress);
+  onProgressRef.current = onProgress;
 
-  const normalizedItems = items ?? [];
+  const runSingle = useCallback(async (modelId: string) => {
+    if (cancelRef.current) return;
+
+    // Normalise model ID so it can be matched to the IPC model catalog.
+    const resolvedModelId = modelId.startsWith("whisper:")
+      ? modelId.slice("whisper:".length)
+      : modelId;
+
+    try {
+      setProgress((prev) => {
+        if (!prev) return prev;
+        const active = prev.active.find((a) => a.modelId === modelId);
+        if (!active) return prev;
+        const next: LocalSetupProgressEntry = { ...active, phase: "progress", percentage: 0 };
+        return { ...prev, active: prev.active.map((a) => (a.modelId === modelId ? next : a)) };
+      });
+
+      const result = await downloadModel(resolvedModelId, (data) => {
+        if (cancelRef.current) return;
+        setProgress((prev) => {
+          if (!prev) return prev;
+          const active = prev.active.find((a) => a.modelId === modelId);
+          if (!active || active.phase === "complete" || active.phase === "failed") return prev;
+          const next: LocalSetupProgressEntry = {
+            ...active,
+            phase: data.type === "installing" ? "installing" : "progress",
+            percentage: data.percentage ?? 0,
+            downloadedBytes: data.downloadedBytes,
+            totalBytes: data.totalBytes,
+          };
+          return { ...prev, active: prev.active.map((a) => (a.modelId === modelId ? next : a)) };
+        });
+      });
+
+      if (cancelRef.current) return;
+
+      if (!result.success) {
+        throw new Error(result.error ?? "download_failed");
+      }
+
+      // Mark complete only after the underlying download helper resolved.
+      setProgress((prev) => {
+        if (!prev) return prev;
+        if (prev.failed.some((f) => f.modelId === modelId)) return prev;
+        if (prev.done.some((d) => d.modelId === modelId)) return prev;
+        const active = prev.active.find((a) => a.modelId === modelId);
+        if (!active) return prev;
+        const next: LocalSetupProgressEntry = { ...active, phase: "complete", percentage: 100 };
+        return {
+          ...prev,
+          active: prev.active.filter((a) => a.modelId !== modelId),
+          done: [...prev.done, next],
+        };
+      });
+    } catch (error) {
+      if (cancelRef.current) return;
+      const normalized = normalizeError(error);
+      setProgress((prev) => {
+        if (!prev) return prev;
+        const active = prev.active.find((a) => a.modelId === modelId);
+        if (!active) return prev;
+        const next: LocalSetupProgressEntry = {
+          ...active,
+          phase: "failed",
+          percentage: 0,
+          error: normalized,
+        };
+        return {
+          ...prev,
+          active: prev.active.filter((a) => a.modelId !== modelId),
+          failed: [...prev.failed, next],
+        };
+      });
+    }
+  }, []);
 
   const start = useCallback(async () => {
+    const list = items ?? [];
     cancelRef.current = false;
-    const initial: LocalSetupProgress = {
-      active: normalizedItems.map((item) => ({
-        modelId: item.modelId,
-        phase: "progress",
-        percentage: 0,
-      })),
+    setProgress({
+      active: list.map((item) => entry(item.modelId)),
       done: [],
       failed: [],
       startedAt: Date.now(),
-    };
-    setProgress(initial);
+    });
     onStart?.();
-    await runDownloads();
-  }, [normalizedItems, onStart]);
-
-  const runDownloads = useCallback(async () => {
-    if (!progress) return;
-    for (const item of normalizedItems) {
+    // Drive the loop from the item list directly — reading `progress` state
+    // here would see the pre-start snapshot (stale closure) and no-op.
+    for (const item of list) {
       if (cancelRef.current) break;
-      const existing = progress.done.find((d) => d.modelId === item.modelId);
-      if (existing) continue;
-      const failed = progress.failed.find((f) => f.modelId === item.modelId);
-      if (failed) continue;
-
-      await runSingle(item.modelId, item);
+      await runSingle(item.modelId);
     }
-  }, [progress, normalizedItems]);
-
-  const runSingle = useCallback(
-    async (modelId: string, item: LocalSetupItem) => {
-      if (cancelRef.current) return;
-
-      // Normalise model ID so it can be matched to the IPC model catalog.
-      const resolvedModelId = modelId.startsWith("whisper:")
-        ? modelId.slice("whisper:".length)
-        : modelId;
-
-      try {
-        await setProgress((prev) => {
-          if (!prev) return prev;
-          const active = prev.active.find((a) => a.modelId === modelId);
-          if (!active) return prev;
-          const next: LocalSetupProgressEntry = {
-            ...active,
-            phase: "progress",
-            percentage: 0,
-          };
-          const active2 = prev.active.map((a) => (a.modelId === modelId ? next : a));
-          return { ...prev, active: active2 };
-        });
-
-        await downloadModel(resolvedModelId, (data) => {
-          if (cancelRef.current) return;
-          setProgress((prev) => {
-            if (!prev) return prev;
-            const active = prev.active.find((a) => a.modelId === modelId);
-            if (!active || active.phase === "complete" || active.phase === "failed") return prev;
-            const next: LocalSetupProgressEntry = {
-              ...active,
-              phase: data.type === "installing" ? "installing" : "progress",
-              percentage: data.percentage ?? 0,
-              downloadedBytes: data.downloadedBytes,
-              totalBytes: data.totalBytes,
-            };
-            const active2 = prev.active.map((a) => (a.modelId === modelId ? next : a));
-            return { ...prev, active: active2 };
-          });
-        });
-
-        if (cancelRef.current) return;
-
-        // Mark complete only after the underlying download helper resolved.
-        // The helper may already have reported 100% during install, but we
-        // keep the done state authoritative here.
-        setProgress((prev) => {
-          if (!prev) return prev;
-          const failedEntry = prev.failed.find((f) => f.modelId === modelId);
-          const doneEntry = prev.done.find((d) => d.modelId === modelId);
-          if (failedEntry || doneEntry) return prev;
-          const active = prev.active.find((a) => a.modelId === modelId);
-          if (!active) return prev;
-          const next: LocalSetupProgressEntry = {
-            ...active,
-            phase: "complete",
-            percentage: 100,
-          };
-          const active2 = prev.active.filter((a) => a.modelId !== modelId);
-          const done = [...prev.done, next];
-          return { ...prev, active: active2, done };
-        });
-
-        onProgress?.({ active: [], done: [], failed: [] });
-      } catch (error) {
-        const normalized = normalizeError(error);
-        setProgress((prev) => {
-          if (!prev) return prev;
-          const active = prev.active.find((a) => a.modelId === modelId);
-          if (!active) return prev;
-          const next: LocalSetupProgressEntry = {
-            ...active,
-            phase: "failed",
-            percentage: 0,
-            error: normalized,
-          };
-          const active2 = prev.active.filter((a) => a.modelId !== modelId);
-          const failed = [...prev.failed, next];
-          return { ...prev, active: active2, failed };
-        });
-      }
-    },
-    [onProgress],
-  );
+  }, [items, onStart, runSingle]);
 
   const cancel = useCallback(() => {
     cancelRef.current = true;
+    // Reset to idle so the UI offers Download again instead of hanging on a
+    // stale percentage. Items never started must not be reported as failed,
+    // so everything goes back to the pre-start list (a later start() retries).
+    setProgress({ active: [], done: [], failed: [] });
     onCancel?.();
   }, [onCancel]);
 
+  // Report real snapshots to the owner. This lives in an effect — never
+  // inside a state updater, which must stay pure (StrictMode double-invokes).
   useEffect(() => {
-    setProgress((prev) => {
-      if (!prev) return prev;
-      const doneCount = prev.done.length;
-      const failedCount = prev.failed.length;
-      if (doneCount + failedCount === normalizedItems.length && normalizedItems.length > 0) {
-        onProgress?.(prev);
-      }
-      return prev;
-    });
-  }, [progress, normalizedItems, onProgress]);
+    if (progress) onProgressRef.current?.(progress);
+  }, [progress]);
 
-  return { progress, start, cancel, onProgress: setProgress };
+  return { progress, start, cancel };
 }
 
 function normalizeError(error: unknown): string {
@@ -162,6 +143,6 @@ function normalizeError(error: unknown): string {
     const parsed = JSON.parse(JSON.stringify(error));
     if (parsed?.message) return String(parsed.message);
     if (parsed?.error) return String(parsed.error);
-  } catch {}
+  } catch { /* noop */ }
   return "download_failed";
 }

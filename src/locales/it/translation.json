@@ -4876,5 +4876,115 @@
       "provider": "Provider",
       "requestId": "ID richiesta"
     }
+  },
+  "localOnboarding": {
+    "shell": {
+      "loading": "Configurazione…",
+      "title": "Configura la dettatura locale",
+      "description": "Tutto funziona sul tuo dispositivo: scegli le lingue, scarica i modelli e prova il microfono."
+    },
+    "progress": {
+      "detection": "Dispositivo",
+      "languages": "Lingue",
+      "stack": "Modelli",
+      "download": "Download",
+      "micTest": "Test microfono",
+      "activation": "Attivazione"
+    },
+    "detection": {
+      "loading": "Analisi del dispositivo…",
+      "retry": "Riprova",
+      "title": "Analisi del dispositivo",
+      "description": "Esaminiamo piattaforma e hardware per consigliare modelli adatti in locale.",
+      "resultLabel": "Hardware rilevato",
+      "platform": "Piattaforma: {{platform}}",
+      "class": "Profilo: {{class}}",
+      "ramHint": "Memoria: {{hint}}",
+      "diskHint": "Archiviazione: {{hint}}",
+      "hasGpuRuntime": "Accelerazione GPU: {{yes}}",
+      "hasStreamingRuntime": "Trascrizione live: {{yes}}",
+      "continue": "Continua"
+    },
+    "languages": {
+      "title": "In quali lingue detti?",
+      "description": "Ci serve per consigliare modelli di trascrizione adatti.",
+      "searchPlaceholder": "Cerca lingue…",
+      "noResults": "Nessuna lingua trovata.",
+      "selected": "Selezionata",
+      "continue": "Continua ({{count}})"
+    },
+    "stack": {
+      "loading": "Ricerca dei modelli migliori…",
+      "continueWithoutRecommendation": "Continua senza consigli",
+      "title": "Configurazione consigliata",
+      "description": "Questi modelli funzionano interamente sul tuo dispositivo. Potrai cambiarli nelle Impostazioni.",
+      "transcription": "Trascrizione",
+      "assistant": "Assistente",
+      "chipStreaming": "Live",
+      "chipOffline": "Offline",
+      "translationPairs": "Traduzione",
+      "translationPairsDescription": "Direzioni di traduzione integrate di questi modelli.",
+      "continue": "Continua",
+      "saving": "Salvataggio…"
+    },
+    "download": {
+      "loading": "Preparazione dei download…",
+      "title": "Scarica i modelli",
+      "description": "I modelli si scaricano una volta sola e restano sul tuo dispositivo.",
+      "errorTitle": "Qualcosa è andato storto",
+      "installed": "Installato",
+      "phase": {
+        "progress": "Download… {{percent}} %",
+        "installing": "Installazione… {{percent}} %",
+        "complete": "Completato",
+        "failed": "Non riuscito"
+      },
+      "retry": "Riprova",
+      "cancel": "Annulla",
+      "download": "Scarica",
+      "failedItem": "Download non riuscito",
+      "failedGeneric": "Il download non è riuscito. Controlla la connessione e riprova.",
+      "someFailed": "Alcuni download non sono riusciti — riprova per continuare.",
+      "overallStatus": "{{phase}} · {{percent}} %",
+      "allInstalled": "Continua"
+    },
+    "micTest": {
+      "loading": "Preparazione del test…",
+      "title": "Prova il microfono",
+      "description": "Registra un breve campione per verificare la trascrizione locale.",
+      "testLabel": "Microfono",
+      "recording": "Registrazione…",
+      "idle": "Inattivo",
+      "transcribing": "Trascrizione…",
+      "stop": "Ferma",
+      "start": "Registra",
+      "result": "Trascrizione",
+      "retry": "Riprova",
+      "continue": "Continua",
+      "pending": "Premi Registra e di' qualche parola.",
+      "skip": "Salta"
+    },
+    "activation": {
+      "dictationLabel": "Dettatura",
+      "assistantLabel": "Assistente vocale",
+      "dictationRequired": "Scegli un tasto di dettatura per continuare.",
+      "assistantRequired": "Scegli un tasto assistente o disattiva l'assistente.",
+      "registerFailed": "Impossibile registrare questo tasto.",
+      "title": "Attiva la dettatura",
+      "description": "Scegli come avviare la dettatura. Premi una volta per iniziare, di nuovo per fermare.",
+      "dictation": "Dettatura",
+      "tap": "Premi",
+      "hold": "Tieni premuto",
+      "pushUnavailable": "Il push-to-talk non è supportato per questo tasto — verrà usato il tasto on/off.",
+      "customPrompt": "Inserisci un tasto (es. Control+Shift+Space):",
+      "invalidHotkey": "Tasto non valido.",
+      "custom": "Personalizzato…",
+      "selectHotkey": "Scegli un tasto qui sopra.",
+      "assistant": "Assistente vocale",
+      "selectAssistantHotkey": "Scegli un tasto assistente.",
+      "saving": "Salvataggio…",
+      "skip": "Salta",
+      "continue": "Fine"
+    }
   }
 }
