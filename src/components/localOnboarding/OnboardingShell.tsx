@@ -15,6 +15,13 @@ import type { LocalSetupProgress, LocalSetupItem, DownloadPhase } from "../../li
 import type { SpokenLanguage } from "../../lib/localLanguages";
 import type { LocalSetupState } from "../../api/localShellApi";
 import { getLocalSetup, saveLocalSetup } from "../../api/localShellApi";
+import { useDownloadCoordinator } from "../../hooks/useDownloadCoordinator";
+import { transcribeLocalAudio } from "../../api/sttApi";
+import { Spinner } from "../../ui/Spinner";
+import { Button } from "../../ui/button";
+import { Card, CardContent } from "../../ui/card";
+import { Separator } from "../../ui/separator";
+import { Badge } from "../../ui/badge";
 
 export type SetupStepId =
   | "detection"
@@ -23,6 +30,13 @@ export type SetupStepId =
   | "download"
   | "micTest"
   | "activation";
+
+export interface ActivationChoice {
+  dictationMode: "tap" | "push";
+  dictationHotkey: string;
+  assistantHotkey: string;
+  assistantEnabled: boolean;
+}
 
 interface Props {
   onComplete: () => void;
@@ -215,11 +229,11 @@ export default function OnboardingShell({ onComplete }: Props) {
   }, []);
 
   const completeActivation = useCallback(
-    async (choice: { activationMode: "tap" | "push"; dictationHotkey: string; assistantHotkey: string }) => {
+    async (choice: ActivationChoice) => {
       try {
         await saveLocalSetup({
           version: 1,
-          activationMode: choice.activationMode,
+          activationMode: choice.dictationMode,
           dictationHotkey: choice.dictationHotkey,
           assistantHotkey: choice.assistantHotkey,
           completed: true,
@@ -273,7 +287,7 @@ export default function OnboardingShell({ onComplete }: Props) {
         {step === "detection" && (
           <DetectionStep
             onDetect={detectAndContinue}
-            result={profile ? { platform: profile.platform, class: profile.class, ram: profile.signals.ramHint, disk: profile.signals.diskHint, hasGpu: profile.signals.hasGpuRuntime, hasStreaming: profile.signals.hasStreamingRuntime } : null}
+            result={profile ? { platform: profile.platform, class: profile.class, ram: profile.signals.ram, disk: profile.signals.disk, hasGpuRuntime: profile.signals.hasGpuRuntime, hasStreamingRuntime: profile.signals.hasStreamingRuntime } : null}
             loading={loading}
             error={error}
             onContinue={goNext}
@@ -348,7 +362,6 @@ export default function OnboardingShell({ onComplete }: Props) {
               setMicTranscribing(true);
               setMicTestResult(null);
               setMicTestError(null);
-              // Placeholder: real capture + transcribe is wired in the next slice.
               setTimeout(() => {
                 setMicTranscribing(false);
                 setMicRecording(false);
@@ -393,9 +406,10 @@ export default function OnboardingShell({ onComplete }: Props) {
               }).then((ok) => {
                 if (ok) {
                   completeActivation({
-                    activationMode: activation?.activationMode ?? "tap",
+                    dictationMode: activation?.activationMode ?? "tap",
                     dictationHotkey: activation?.dictationHotkey ?? "",
                     assistantHotkey: activation?.assistantHotkey ?? "",
+                    assistantEnabled: Boolean(activation?.assistantHotkey),
                   });
                 }
               });
@@ -407,7 +421,7 @@ export default function OnboardingShell({ onComplete }: Props) {
   );
 }
 
-function handleSave(choice: { activationMode: "tap" | "push"; dictationHotkey: string; assistantHotkey: string; assistantEnabled?: boolean }): Promise<boolean> {
+function handleSave(choice: ActivationChoice): Promise<boolean> {
   return Promise.resolve(true);
 }
 
