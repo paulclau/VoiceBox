@@ -38,6 +38,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "splash": {
+        "image": "./assets/splash-icon.png",
+        "backgroundColor": "#007AFF"
+      },
       "predictiveBackGestureEnabled": false,
       "package": "com.gizmolabs.openwhispr",
       "permissions": ["android.permission.RECORD_AUDIO", "android.permission.MODIFY_AUDIO_SETTINGS"]
@@ -73,6 +77,7 @@
       ],
       "expo-apple-authentication",
       "./plugins/provider-networking/withProviderNetworking",
+      "./plugins/android-kotlin-stdlib/withAndroidKotlinStdlib",
       "./plugins/ios-cxx-standard/withIosCxxStandard",
       "./plugins/pod-deployment-target/withPodDeploymentTarget",
       "./plugins/storekit/withStoreKitConfiguration",
@@ -102,7 +107,8 @@
           "userTrackingPermission": "Allow tracking to help us measure which ads lead to OpenWhispr installs and subscriptions. Your voice and text are never used for advertising."
         }
       ],
-      "react-native-appsflyer"
+      "react-native-appsflyer",
+      "./plugins/android-backup-attributes/withAndroidBackupAttributes"
     ],
     "experiments": {
       "reactCompiler": true

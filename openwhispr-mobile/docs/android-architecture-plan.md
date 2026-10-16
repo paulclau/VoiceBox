@@ -48,6 +48,8 @@
 ## 4. Phased delivery
 
 - **Phase 0 (done)** — dep install, typecheck, full Jest baseline, matrix.
+  Android debug build now assembles and boots on an emulator (see
+  `android-gaps-and-blockers.md` → “Android build — first green local build”).
 - **Phase 1 — Sync convergence test.** Offline queue → reconnect → two-device
   merge for notes/folders/snippets/dictionary; conflict + identity semantics
   aligned with desktop (`syncIdentity`, push scopes). Release gate.

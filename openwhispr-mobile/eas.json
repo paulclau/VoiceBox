@@ -11,6 +11,10 @@
       "ios": {
         "image": "latest",
         "buildConfiguration": "Debug"
+      },
+      "android": {
+        "image": "latest",
+        "buildType": "apk"
       }
     },
     "preview": {
@@ -18,6 +22,10 @@
       "channel": "preview",
       "ios": {
         "image": "latest"
+      },
+      "android": {
+        "image": "latest",
+        "buildType": "apk"
       }
     },
     "production": {
@@ -29,6 +37,10 @@
       "ios": {
         "image": "latest",
         "resourceClass": "medium"
+      },
+      "android": {
+        "image": "latest",
+        "buildType": "app-bundle"
       }
     }
   },

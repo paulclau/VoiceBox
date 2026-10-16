@@ -21,6 +21,64 @@
 - [ ] **Play release checklist.** Signing, staged rollout, crash reporting,
   battery/memory profiling of local models.
 
+## Android build — first green local build (closed this session)
+
+`:app:assembleDebug` (x86_64) → `app-debug.apk` (109 MB) installed on a
+Pixel_9_API_35 emulator (API 35). Metro bundled `expo-router/entry` (4,912
+modules), the app rendered its first onboarding screen, and the only native log
+noise was React Native's own dev-mode soft exception (`onWindowFocusChange`
+before the React context is ready). Screenshot: `docs/assets/android-onboarding.png`.
+
+- [x] **Kotlin stdlib mismatch.** `react-native-appsflyer` declares
+  `kotlin-stdlib:${safeExtGet('kotlin_stdlib_version', '2.4.10')}`, so the module
+  compiled against a stdlib newer than Expo's Kotlin (2.1.20) and
+  `:react-native-appsflyer:compileDebugKotlin` died with an “internal compiler
+  error” (really a metadata mismatch reported from the type checker). Fixed by
+  `plugins/android-kotlin-stdlib/withAndroidKotlinStdlib`, which forces
+  `kotlin-stdlib*` to `rootProject.ext.kotlinVersion` in every subproject.
+- [x] **Manifest merger failure.** `expo-secure-store` and
+  `com.appsflyer:af-android-sdk` both declare `dataExtractionRules` /
+  `fullBackupContent`. Fixed by
+  `plugins/android-backup-attributes/withAndroidBackupAttributes`, which adds
+  `tools:replace` for the app's own rules (AppsFlyer's option deletes ours
+  instead, which would let Keystore-backed values into cloud backups).
+- [x] **Missing `@drawable/splashscreen_logo`.** `withAndroidSplashStyles`
+  always writes the Android 12+ splash icon, but the drawable is only generated
+  when a splash *image* is configured — `splash` had a background colour only.
+  Fixed by giving Android the repo's previously unused `assets/splash-icon.png`
+  (`android.splash`), leaving the iOS splash untouched.
+- [x] **No Android EAS profiles.** `eas.json` had iOS-only `build` entries, so
+  no Android build could be started. Added `android` to
+  `development`/`preview` (apk) and `production` (app-bundle).
+
+Still open (build-related):
+
+- [ ] `android: userInterfaceStyle` warning: `expo-system-ui` is not installed,
+  so the declared `light` style does not lock the Android theme.
+- [ ] Play submission: no `submit.production.android` service-account path, and
+  no upload/signing key story beyond the debug keystore.
+- [ ] No CI Android build has ever run (EAS or otherwise) — the green build is a
+  local, x86_64-only one.
+- [ ] A production build bundling the JS (`assembleRelease` / EAS) is unverified;
+  only the dev-client debug variant has booted.
+
+### Local build notes (Windows)
+
+- **Checkout path length.** Native codegen object paths exceed Windows' 260-char
+  limit under this checkout
+  (`…\OneDrive\Documents\GitHub\VoiceBox\openwhispr-mobile`), so ninja fails
+  with `Filename longer than 260 characters` for the autolinked
+  `react-native-safe-area-context` sources. Build from a short path — a
+  `subst` drive mapped to the repo's *parent* works (`subst Y: <VoiceBox>`, then
+  build in `Y:\openwhispr-mobile\android`). Mapping the app folder itself to a
+  drive root does **not** work: expo-autolinking's package.json walk skips the
+  loop body when the working directory is a drive root and reports
+  `Couldn't find "package.json" up from path "X:\"`.
+- **Memory.** Reanimated's C++ build (`InterpolatorFactory.cpp`) exhausted memory
+  and killed clang while the emulator was running. Free the emulator first and
+  cap parallelism (`--max-workers=2`, `-PreactNativeArchitectures=x86_64`).
+- First native build is multi-minute per ABI; a debug APK for one ABI is ~110 MB.
+
 ## Functional gaps — desktop shell (closed this session)
 
 - [x] Assistant chord went to the dictation `updateHotkey` channel (clobbered
