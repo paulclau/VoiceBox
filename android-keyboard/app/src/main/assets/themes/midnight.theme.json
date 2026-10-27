@@ -1,0 +1,33 @@
+{
+  "id": "midnight",
+  "name": "Midnight",
+  "colors": {
+    "background": "#FF0B0D10",
+    "key": "#FF151A21",
+    "keyPressed": "#FF232B36",
+    "accent": "#FF5EE0C0",
+    "label": "#FFF5F7FA",
+    "labelOnAccent": "#FF04120E",
+    "keyBorder": "#FF1E2530"
+  },
+  "key": {
+    "radiusDp": 12,
+    "gapDp": 6,
+    "labelSizeSp": 22,
+    "pressedScale": 0.94
+  },
+  "flight": {
+    "enabled": true,
+    "durationMs": 200,
+    "arc": 0.35,
+    "startScale": 1.25,
+    "endScale": 0.85,
+    "trail": true,
+    "allowFallbackLane": true,
+    "laneDp": 0
+  },
+  "haptics": {
+    "press": "light",
+    "land": "tick"
+  }
+}

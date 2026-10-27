@@ -1,0 +1,44 @@
+{
+  "id": "numbers",
+  "name": "QWERTY + numbers",
+  "rows": [
+    {
+      "keys": [
+        { "output": "1" }, { "output": "2" }, { "output": "3" }, { "output": "4" }, { "output": "5" },
+        { "output": "6" }, { "output": "7" }, { "output": "8" }, { "output": "9" }, { "output": "0" }
+      ]
+    },
+    {
+      "keys": [
+        { "output": "q" }, { "output": "w" }, { "output": "e" }, { "output": "r" },
+        { "output": "t" }, { "output": "y" }, { "output": "u" }, { "output": "i" },
+        { "output": "o" }, { "output": "p" }
+      ]
+    },
+    {
+      "keys": [
+        { "output": "a" }, { "output": "s" }, { "output": "d" }, { "output": "f" },
+        { "output": "g" }, { "output": "h" }, { "output": "j" }, { "output": "k" },
+        { "output": "l" },
+        { "kind": "backspace", "width": 1.5, "id": "backspace", "gesture": { "swipe-left": "deleteWord" } }
+      ]
+    },
+    {
+      "keys": [
+        { "kind": "shift", "width": 1.5, "id": "shift" },
+        { "output": "z" }, { "output": "x" }, { "output": "c" }, { "output": "v" },
+        { "output": "b" }, { "output": "n" }, { "output": "m" },
+        { "kind": "enter", "width": 1.5 }
+      ]
+    },
+    {
+      "keys": [
+        { "kind": "language", "width": 1 },
+        { "kind": "mic", "width": 1, "gesture": { "swipe-up": "voice" } },
+        { "kind": "space", "width": 5, "id": "space", "gesture": { "swipe-left": "language", "swipe-down": "dismissKeyboard" } },
+        { "kind": "emoji", "width": 1 },
+        { "kind": "backspace", "width": 1 }
+      ]
+    }
+  ]
+}

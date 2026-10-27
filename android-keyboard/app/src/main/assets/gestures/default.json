@@ -1,0 +1,8 @@
+{
+  "bindings": {
+    "space.swipe-left": "language",
+    "space.swipe-down": "dismissKeyboard",
+    "backspace.swipe-left": "deleteWord",
+    "mic.swipe-up": "voice"
+  }
+}

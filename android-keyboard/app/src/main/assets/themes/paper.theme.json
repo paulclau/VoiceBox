@@ -1,0 +1,33 @@
+{
+  "id": "paper",
+  "name": "Paper",
+  "colors": {
+    "background": "#FFF4F1EA",
+    "key": "#FFFFFFFF",
+    "keyPressed": "#FFE4DED2",
+    "accent": "#FF2F6F5E",
+    "label": "#FF1B1A17",
+    "labelOnAccent": "#FFFFFFFF",
+    "keyBorder": "#FFDDD6C8"
+  },
+  "key": {
+    "radiusDp": 10,
+    "gapDp": 7,
+    "labelSizeSp": 22,
+    "pressedScale": 0.9
+  },
+  "flight": {
+    "enabled": true,
+    "durationMs": 240,
+    "arc": 0.22,
+    "startScale": 1.15,
+    "endScale": 0.9,
+    "trail": false,
+    "allowFallbackLane": true,
+    "laneDp": 0
+  },
+  "haptics": {
+    "press": "light",
+    "land": "none"
+  }
+}

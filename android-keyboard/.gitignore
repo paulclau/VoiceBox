@@ -1,0 +1,16 @@
+.gradle/
+build/
+*/build/
+local.properties
+tools/.toolchain-setup.log
+.idea/
+*.iml
+.kotlin/
+captures/
+
+# sherpa-onnx prebuilts (~26 MB of arm64 binaries); tools/download-sherpa-onnx.sh fetches them
+app/src/main/jniLibs/
+app/src/main/cpp/sherpa-onnx/include/
+
+# CMake/NDK scratch
+**/.cxx/

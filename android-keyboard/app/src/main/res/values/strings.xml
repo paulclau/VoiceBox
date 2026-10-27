@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Bark Board</string>
+    <string name="ime_name">Bark Board Keyboard</string>
+    <string name="settings_title">Bark Board settings</string>
+
+    <string name="subtype_english">English (Bark 3.0 Clean)</string>
+
+    <string name="settings_enable">Enable keyboard</string>
+    <string name="settings_choose">Choose keyboard</string>
+    <string name="settings_permission">Allow microphone</string>
+    <string name="settings_permission_granted">Microphone allowed</string>
+    <string name="settings_download">Download Bark 3.0 Clean model</string>
+    <string name="settings_model_ready">Model ready</string>
+    <string name="settings_model_missing">Model missing: %1$d of %2$d files verified</string>
+    <string name="settings_downloading">Downloading %1$s (%2$d%%)</string>
+    <string name="settings_download_failed">Download failed: %1$s</string>
+    <string name="settings_engine">Engine: %1$s</string>
+    <string name="settings_current">Theme: %1$s · Layout: %2$s</string>
+    <string name="settings_theme_pick">Choose a theme</string>
+    <string name="settings_layout_pick">Choose a keyboard layout</string>
+    <string name="settings_applies_next">Applies next time the keyboard opens.</string>
+    <string name="settings_profiles">Per-app profiles (%1$d)</string>
+    <string name="settings_attribution">Speech model: Underdog Bark 3.0 Clean by Conway Research (CC-BY-4.0), derived from NVIDIA Parakeet TDT 0.6B v3 and Moondream Parakeet Ultra. Audio is transcribed on this device and never uploaded.</string>
+    <string name="settings_language_note">Bark 3.0 Clean is English-only and drops fillers, false starts and repeats as it transcribes.</string>
+
+    <string name="grant_rationale">Bark Board needs the microphone to type what you say. Audio is processed on this device.</string>
+
+    <!-- Look and feel editor -->
+    <string name="settings_appearance">Customise look and feel</string>
+    <string name="appearance_title">Look and feel</string>
+    <string name="appearance_preview_hint">Tap a key to watch it fly.</string>
+    <string name="appearance_theme">Theme: %1$s</string>
+    <string name="appearance_theme_pick">Choose a theme to edit</string>
+    <string name="appearance_save">Save</string>
+    <string name="appearance_revert">Revert</string>
+    <string name="appearance_duplicate">Duplicate</string>
+    <string name="appearance_import">Import…</string>
+    <string name="appearance_export">Export…</string>
+    <string name="appearance_delete">Delete this theme</string>
+    <string name="appearance_saved">Saved. Reopen the keyboard to see it.</string>
+    <string name="appearance_reverted">Reverted to the version this screen opened with.</string>
+    <string name="appearance_duplicated">Editing a copy. Save it to keep both.</string>
+    <string name="appearance_imported">Imported %1$s.</string>
+    <string name="appearance_import_failed">Import failed: %1$s</string>
+    <string name="appearance_exported">Exported.</string>
+    <string name="appearance_export_failed">Export failed: %1$s</string>
+    <string name="appearance_delete_confirm">Delete %1$s?</string>
+    <string name="appearance_delete_message">The theme file is removed from this device. A built-in theme with the same name reappears underneath.</string>
+    <string name="appearance_deleted">Theme deleted.</string>
+
+    <string name="appearance_colours">Colours</string>
+    <string name="appearance_colour_background">Background</string>
+    <string name="appearance_colour_key">Key</string>
+    <string name="appearance_colour_key_pressed">Pressed key</string>
+    <string name="appearance_colour_accent">Accent</string>
+    <string name="appearance_colour_label">Key label</string>
+    <string name="appearance_colour_label_on_accent">Label on accent</string>
+    <string name="appearance_colour_border">Key border</string>
+    <string name="appearance_colour_hue">Hue</string>
+    <string name="appearance_colour_saturation">Saturation</string>
+    <string name="appearance_colour_lightness">Lightness</string>
+    <string name="appearance_colour_alpha">Opacity</string>
+
+    <string name="appearance_keys">Keys</string>
+    <string name="appearance_key_radius">Corner radius</string>
+    <string name="appearance_key_gap">Key gap</string>
+    <string name="appearance_label_size">Label size</string>
+    <string name="appearance_pressed_scale">Press shrink</string>
+
+    <string name="appearance_flight">Flying letter</string>
+    <string name="appearance_flight_enabled">Animate letters into the text field</string>
+    <string name="appearance_flight_duration">Duration (ms)</string>
+    <string name="appearance_flight_arc">Arc</string>
+    <string name="appearance_flight_start_scale">Start size</string>
+    <string name="appearance_flight_end_scale">Landing size</string>
+    <string name="appearance_flight_trail">Draw a trail</string>
+    <string name="appearance_lane">Flight lane height</string>
+    <string name="appearance_lane_warning">The lane is see-through space above the keys that the letter flies through. It costs the app that much screen height, so leave it at 0 unless you have tried a larger value on this device.</string>
+
+    <string name="appearance_haptics">Haptics</string>
+    <string name="appearance_haptic_press">On press: %1$s</string>
+    <string name="appearance_haptic_land">On landing: %1$s</string>
+    <string name="appearance_haptic_press_pick">Haptic when a key is pressed</string>
+    <string name="appearance_haptic_land_pick">Haptic when a letter lands</string>
+
+    <string name="appearance_contrast_title">Labels hard to read</string>
+    <string name="appearance_contrast_message">The key label is too close in brightness to the key itself. Use a label colour that contrasts instead?</string>
+    <string name="appearance_contrast_fix">Use a readable label</string>
+
+    <!-- Per-app profiles -->
+    <string name="profiles_title">Per-app profiles</string>
+    <string name="profiles_intro">Give an app its own theme, its own layout, or both. Whatever you leave alone keeps following the defaults.</string>
+    <string name="profiles_defaults">Defaults: %1$s · %2$s</string>
+    <string name="profiles_defaults_hint">Change the defaults from the settings screen.</string>
+    <string name="profiles_add">Add an app…</string>
+    <string name="profiles_none">No profiles yet, so every app uses the defaults above.</string>
+    <string name="profiles_summary">%1$s · %2$s</string>
+    <string name="profiles_inherits">inherits everything</string>
+    <string name="profiles_pick_app">Which app?</string>
+    <string name="profiles_type_package">Type a package name…</string>
+    <string name="profiles_package_hint">com.example.app</string>
+    <string name="profiles_package_help">For an app that is not in the list: its package name, as shown in its Play Store link.</string>
+    <string name="profiles_package_blank">Enter a package name.</string>
+    <string name="profiles_inherit">Same as default</string>
+    <string name="profiles_theme">Theme: %1$s</string>
+    <string name="profiles_layout">Layout: %1$s</string>
+    <string name="profiles_pick_theme">Theme for this app</string>
+    <string name="profiles_pick_layout">Layout for this app</string>
+    <string name="profiles_edit_hint">Only what you set here is overridden; the rest follows the defaults.</string>
+    <string name="profiles_remove">Remove this profile</string>
+    <string name="profiles_remove_confirm">Remove the profile for %1$s?</string>
+    <string name="profiles_remove_message">The app goes back to the defaults. Nothing else changes.</string>
+    <string name="profiles_removed">Profile removed.</string>
+    <string name="profiles_saved">Saved. The keyboard applies it next time it opens.</string>
+    <string name="profiles_failed">Could not save: %1$s</string>
+    <string name="profiles_broken">Saved profiles are being ignored: %1$s</string>
+</resources>

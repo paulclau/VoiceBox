@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false" />
+
+    <!--
+      Per-app profiles are keyed by the app the user is typing in, and the picker lists launcher
+      apps. Package visibility filtering makes queryIntentActivities return only what is declared
+      here, so without this the list would come back nearly empty on Android 11+.
+    -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="false"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.BarkBoard">
+
+        <!-- The keyboard itself. BIND_INPUT_METHOD keeps other apps from binding it. -->
+        <service
+            android:name=".KeyboardService"
+            android:exported="true"
+            android:label="@string/ime_name"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method" />
+        </service>
+
+        <!--
+          Inference lives in its own process: the Bark 3.0 Clean int8 model peaks around 1.15 GB
+          of resident memory, which must not be charged to the keyboard process.
+        -->
+        <service
+            android:name=".asr.AsrService"
+            android:exported="false"
+            android:process=":asr" />
+
+        <!-- Also the launcher entry: setup is all there is to open. -->
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="true"
+            android:label="@string/settings_title"
+            android:theme="@style/Theme.BarkBoard">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--
+          The look-and-feel editor. Not exported: it is reached from Settings, and its only
+          inputs are the user's own taps or a theme file they picked.
+        -->
+        <activity
+            android:name=".AppearanceActivity"
+            android:exported="false"
+            android:label="@string/appearance_title"
+            android:theme="@style/Theme.BarkBoard" />
+
+        <!--
+          The per-app profile list. Not exported: it is reached from Settings and its only input
+          is the user's own taps or a package name they typed.
+        -->
+        <activity
+            android:name=".ProfilesActivity"
+            android:exported="false"
+            android:label="@string/profiles_title"
+            android:theme="@style/Theme.BarkBoard" />
+
+        <!--
+          An IME cannot show a runtime permission dialog, so the mic permission is requested
+          from this transparent activity launched by the keyboard.
+        -->
+        <activity
+            android:name=".GrantActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:theme="@style/Theme.BarkBoard.Transparent" />
+    </application>
+
+</manifest>
