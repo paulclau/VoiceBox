@@ -37,10 +37,12 @@ jobs:
       # refuses to configure the native build against anything else.
       - name: Install Android SDK packages
         run: |
-          set -euo pipefail
           sdk="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
           sdkmanager="$sdk/cmdline-tools/latest/bin/sdkmanager"
-          yes | "$sdkmanager" --licenses > /dev/null
+          echo "sdk=$sdk"
+          # `yes` dies of SIGPIPE once sdkmanager stops reading, which pipefail would turn into a
+          # failed step, so the answers are fed from a finite list instead.
+          printf 'y\n%.0s' {1..20} | "$sdkmanager" --licenses > /dev/null
           "$sdkmanager" --install \
             "platforms;android-35" "build-tools;35.0.0" \
             "ndk;29.0.14206865" "cmake;3.22.1"
