@@ -42,6 +42,12 @@ trade is right on a phone with little memory is still a measurement, not a decis
 Dictation is model-clean, not string-clean: no padding before the audio, no app-side filler
 filter. The only text touched on the way in is sherpa-onnx's `<unk>` placeholder and whitespace.
 
+## Install without building
+
+[Releases](../../releases) carry a debug-signed arm64 APK built by the *BarkBoard APK release*
+workflow (Actions → run it with a release tag as input). Sideload it, enable the keyboard under
+Settings → System → Languages & input, then download the model from the app's Settings.
+
 ## Build
 
 Requires JDK 17, the Android SDK (platform 35, build-tools 35.0.0) and — for voice typing — NDK
