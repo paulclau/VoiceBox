@@ -1,0 +1,74 @@
+name: BarkBoard APK release
+
+# Builds the installable debug APK and attaches it to a release, so a build is downloadable
+# without anyone needing the Android toolchain locally. The APK is not committed: it is 28 MB
+# and signed with the debug key.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to attach the APK to
+        required: true
+        default: barkboard-v0.1.0
+  push:
+    tags:
+      - "barkboard-v*"
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      # Versions are pinned to what app/build.gradle.kts and CMakeLists.txt ask for; Gradle
+      # refuses to configure the native build against anything else.
+      - name: Install Android SDK packages
+        run: |
+          set -euo pipefail
+          sdk="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+          sdkmanager="$sdk/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$sdkmanager" --licenses > /dev/null
+          "$sdkmanager" --install \
+            "platforms;android-35" "build-tools;35.0.0" \
+            "ndk;29.0.14206865" "cmake;3.22.1"
+
+      # The sherpa-onnx prebuilts are git-ignored, so without this the build succeeds but ships
+      # no speech engine.
+      - name: Fetch speech engine prebuilts
+        working-directory: android-keyboard
+        run: ./tools/download-sherpa-onnx.sh
+
+      - name: Build debug APK
+        working-directory: android-keyboard
+        run: ./gradlew :app:assembleDebug --no-daemon --stacktrace
+
+      - name: Attach APK to the release
+        working-directory: android-keyboard
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          version="$(sed -n 's/.*versionName = "\(.*\)"/\1/p' app/build.gradle.kts)"
+          asset="barkboard-${version}-debug.apk"
+          cp app/build/outputs/apk/debug/app-debug.apk "/tmp/$asset"
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" > /dev/null
+          gh release upload "$TAG" "/tmp/$asset" --repo "$GITHUB_REPOSITORY" --clobber
+          sha256sum "/tmp/$asset"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: barkboard-debug-apk
+          path: android-keyboard/app/build/outputs/apk/debug/app-debug.apk
